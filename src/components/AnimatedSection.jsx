@@ -1,13 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-export const AnimatedSection = ({ children, className = '', delay = 0, staggerChildren = false }) => {
+export const AnimatedSection = ({ children, className = '', delay = 0, staggerChildren = false, staggerDelay = 0.1, itemDuration = 0.8 }) => {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: staggerDelay,
         delayChildren: delay,
       }
     }
@@ -19,7 +19,7 @@ export const AnimatedSection = ({ children, className = '', delay = 0, staggerCh
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.8,
+        duration: itemDuration,
         ease: [0.16, 1, 0.3, 1] // Apple-like easing
       }
     }

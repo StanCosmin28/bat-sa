@@ -1,22 +1,26 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ArrowUpRight, Loader2 } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 import AnimatedSection from "./AnimatedSection";
 
 // Lazy load Spline to prevent it from blocking the initial render
 const Spline = lazy(() => import("@splinetool/react-spline"));
 
+// The library resolving isn't the same as the scene being ready to look at —
+// Spline's own onLoad fires once it has actually rendered a first frame.
+// We fade it in only then, so it never pops in abruptly; the ambient glows
+// in Layer 1 keep the background from looking empty in the meantime.
 function SplineScene({ scene, className }) {
+  const [ready, setReady] = useState(false);
+
   return (
-    <Suspense
-      fallback={
-        <div className="w-full h-full flex items-center justify-center bg-transparent">
-          <Loader2 className="w-10 h-10 animate-spin text-bat-blue" />
-        </div>
-      }
-    >
-      <Spline scene={scene} className={className} />
+    <Suspense fallback={null}>
+      <div
+        className={`w-full h-full transition-opacity duration-1000 ease-out ${ready ? "opacity-100" : "opacity-0"}`}
+      >
+        <Spline scene={scene} className={className} onLoad={() => setReady(true)} />
+      </div>
     </Suspense>
   );
 }
@@ -45,7 +49,7 @@ const HeroV2 = () => {
       {/* ── Layer 4: Content overlaid on top ── */}
       <div className="container mx-auto px-6 lg:px-16 relative z-30 h-full flex flex-col justify-end pb-12 md:pb-20 pointer-events-none">
         <div className="w-full max-w-4xl pointer-events-none">
-          <AnimatedSection>
+          <AnimatedSection staggerChildren delay={0.15} staggerDelay={0.25} itemDuration={1}>
             {/* Kicker */}
             <div className="inline-flex items-center gap-2 mb-4 md:mb-6 px-4 py-1.5 md:px-5 md:py-2 rounded-full border border-bat-blue/20 bg-white/70 text-bat-blue text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase backdrop-blur-md shadow-sm pointer-events-auto">
               <span className="relative flex h-2 w-2">
