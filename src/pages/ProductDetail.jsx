@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Download, Cpu, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Download, ChevronRight } from 'lucide-react';
 import { products } from '../data/products';
 import AnimatedSection from '../components/AnimatedSection';
 import ProductCard from '../components/ProductCard';
@@ -87,11 +87,15 @@ const ProductDetail = () => {
               {product.info}
             </p>
 
-            <button disabled className="group w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-bat-navy/5 text-bat-navy/50 font-bold py-4 px-10 rounded-full cursor-not-allowed transition-all">
+            <a
+              href={`/data_sheets/${product.key}.pdf`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-bat-navy text-white font-bold py-4 px-10 rounded-full hover:bg-bat-blue transition-all duration-300"
+            >
               <Download size={20} className="group-hover:-translate-y-0.5 transition-transform" />
-              Download Technical Sheet
-              <span className="text-[10px] sm:text-xs bg-bat-navy/10 px-2 py-0.5 rounded-full text-bat-navy/60 ml-2">Soon</span>
-            </button>
+              {t('detail.download')}
+            </a>
           </AnimatedSection>
 
           {/* Sleek Animated Tabs */}
@@ -137,14 +141,7 @@ const ProductDetail = () => {
                     product.wiring ? (
                       <div dangerouslySetInnerHTML={{ __html: product.wiring }} />
                     ) : (
-                      <div className="flex items-center gap-4 p-5 sm:p-6 rounded-2xl bg-bat-navy/5 border border-bat-navy/5">
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0">
-                          <Cpu size={20} className="text-gray-400 sm:w-6 sm:h-6" />
-                        </div>
-                        <p className="text-sm sm:text-base font-medium text-gray-500 m-0 leading-snug">
-                          Wiring diagrams for this module will be available in the next firmware documentation update.
-                        </p>
-                      </div>
+                      <p className="text-gray-500">{t('detail.wiringMsg')}</p>
                     )
                   )}
                 </motion.div>

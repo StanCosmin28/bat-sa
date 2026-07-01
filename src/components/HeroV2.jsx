@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState, useEffect } from "react";
+import React, { Suspense, lazy, useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
@@ -44,6 +44,40 @@ function SplineScene({ scene, className }) {
   );
 }
 
+// Skip back to this point (not to 0) once the clip ends, so only the very
+// first playthrough shows the full intro — every repeat afterwards feels
+// like a shorter, later-starting cycle instead of visibly resetting to the
+// same opening beat each time.
+const LOOP_RESTART_SECONDS = 4;
+
+// No poster — a still frame that then "jumps" into motion once the video
+// buffers reads as broken. Stay on the plain background (Layer 1's glows)
+// and fade the video in only once it can actually play.
+function MobileHeroVideo() {
+  const [ready, setReady] = useState(false);
+  const videoRef = useRef(null);
+
+  return (
+    <video
+      ref={videoRef}
+      className={`w-full h-full object-cover transition-opacity duration-700 ease-out ${ready ? "opacity-100" : "opacity-0"}`}
+      autoPlay
+      muted
+      playsInline
+      onCanPlay={() => setReady(true)}
+      onEnded={() => {
+        const video = videoRef.current;
+        if (!video) return;
+        video.currentTime = LOOP_RESTART_SECONDS;
+        video.play();
+      }}
+    >
+      <source src="/videos/hero-robot-mobile.webm" type="video/webm" />
+      <source src="/videos/hero-robot-mobile.mp4" type="video/mp4" />
+    </video>
+  );
+}
+
 const HeroV2 = () => {
   const { t } = useLanguage();
   const isDesktop = useIsDesktop();
@@ -62,17 +96,7 @@ const HeroV2 = () => {
             className="w-full h-full object-cover"
           />
         ) : (
-          <video
-            className="w-full h-full object-cover"
-            autoPlay
-            loop
-            muted
-            playsInline
-            poster="/videos/hero-robot-poster.webp"
-          >
-            <source src="/videos/hero-robot-mobile.webm" type="video/webm" />
-            <source src="/videos/hero-robot-mobile.mp4" type="video/mp4" />
-          </video>
+          <MobileHeroVideo />
         )}
       </div>
 
