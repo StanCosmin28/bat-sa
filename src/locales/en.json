@@ -189,6 +189,8 @@
   "detail.back": "Back to Products",
   "detail.compatible": "BAT BUS Compatible",
   "detail.download": "Download Data Sheet",
+  "detail.viewFront": "Front",
+  "detail.viewBack": "Detail",
   "detail.comingSoon": "(Coming Soon)",
   "detail.tab.description": "description",
   "detail.tab.characteristics": "characteristics",

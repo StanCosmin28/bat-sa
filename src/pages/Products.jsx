@@ -81,7 +81,7 @@ const Products = () => {
                       : 'bg-white lg:bg-transparent text-gray-500 border-gray-200 lg:border-transparent hover:bg-white hover:text-bat-navy lg:hover:border-gray-200 hover:shadow-sm'
                   }`}
                 >
-                  <span className="uppercase tracking-wider lg:normal-case lg:tracking-normal">{cat === 'All' ? (t('common.all') || 'All Modules') : cat}</span>
+                  <span className="uppercase tracking-wider lg:normal-case lg:tracking-normal">{cat === 'All' ? t('cat.all') : cat}</span>
                   {activeCategory === cat && (
                     <ChevronRight size={16} className="hidden lg:block text-white/70" />
                   )}

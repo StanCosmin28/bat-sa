@@ -5,6 +5,7 @@ export const products = [
     name: "MRM 80-1900",
     category: "power_modules",
     categoryLabel: "Power Modules",
+    hasDetail: true,
     info: "Control CPU for relay circuits",
     description: `<p>The CPU circuit control unit with relay is an intelligent electronic card provided with a programmable microprocessor (electronic integrated circuit equipped with memory RAM, ROM and EEPROM) for the acquisition of 8 potential free contacts for the management of inputs and for the management of 8 outputs (relays).</p>
 <p>The inputs are for managing the 8 outputs, managing scenes and scenarios, and within a GTC framework the inputs will be transferred towards another module to activate a device, for counting of time and/or impulse.</p>
@@ -18,6 +19,7 @@ export const products = [
     name: "MRM 80-1000",
     category: "power_modules",
     categoryLabel: "Power Modules",
+    hasDetail: true,
     info: "Control CPU for relay circuits",
     description: `<p>The CPU circuit control unit with relay is an intelligent electronic card provided with a programmable microprocessor (RAM, ROM and EEPROM) for the acquisition of 8 potential free contacts for the management of inputs and 8 outputs (relays).</p>
 <p>The module can pilot 8 outputs with 12/24/240 V DC/AC and it is recommended for piloting engines, lighting.</p>
@@ -30,6 +32,7 @@ export const products = [
     name: "MRI 80-1900",
     category: "power_modules",
     categoryLabel: "Power Modules",
+    hasDetail: true,
     info: "Control CPU for relay inverter circuits",
     description: `<p>The CPU circuit control unit with relay inverter is an intelligent electronic card provided with a programmable microprocessor (RAM, ROM and EEPROM) for the acquisition of 8 potential free contacts and the management of 8 relay outputs. The module pilots 8 outputs with 12/24/240 V DC/AC, low power.</p>
 <p>The CPU can be connected via BUS to other BAT modules. The home automation software and GTC FreeDOM also allows module programming and supervision.</p>`,
@@ -54,6 +57,7 @@ export const products = [
     name: "MT 40-1600",
     category: "variation_modules",
     categoryLabel: "Variation Modules",
+    hasDetail: true,
     info: "CPU dimmer 240 VAC",
     description: `<p>The CPU circuit control unit with variable intensity is an intelligent electronic card (RAM, ROM and EEPROM) for the acquisition of 8 potential free contacts and for managing 4 early phase outputs switching inverters.</p>
 <p>The inputs pilot 4 outputs of 2A each (input 1 to 4), control scenes and scenarios (input 5 to 8), and within a GTC framework the input can be transferred towards another module for counting of time and/or impulse.</p>
@@ -66,6 +70,7 @@ export const products = [
     name: "MDL 24-4101",
     category: "variation_modules",
     categoryLabel: "Variation Modules",
+    hasDetail: true,
     info: "CPU dimmer LED",
     description: `<p>The CPU with variable intensity is an intelligent electronic card (RAM, ROM and EEPROM) for the acquisition of 8 free of potential contacts and for managing 4 outputs with variable intensity for LED lighting. The variation is achieved by pulse width modulation at a frequency of 200Hz.</p>
 <p>The module is divided into two parts: bus and power, which are galvanically isolated. Each outlet is equipped with temperature protection and overcurrent protection.</p>`,
@@ -77,6 +82,7 @@ export const products = [
     name: "MSA 80-010",
     category: "variation_modules",
     categoryLabel: "Variation Modules",
+    hasDetail: true,
     info: "CPU 8 analog outputs 0-10V",
     description: `<p>The CPU control unit with variable intensity is an intelligent electronic card (RAM, ROM and EEPROM) for the acquisition of 8 free of potential contacts for the management of inputs, and for the piloting of 8 analogue outputs 0-10VDC.</p>
 <p>Within a GTC framework the inputs can be transferred towards another module to activate a device. The home automation software and GTC FreeDOM also allows module programming and supervision.</p>`,
@@ -88,6 +94,7 @@ export const products = [
     name: "MSA 10-010",
     category: "variation_modules",
     categoryLabel: "Variation Modules",
+    hasDetail: true,
     info: "CPU 1 analog output 0-10V",
     description: `<p>The CPU control unit is an intelligent electronic card (RAM, ROM and EEPROM) for the acquisition of 1 analogue output (0-10VDC). We can connect devices that have 0-10VDC control input.</p>`,
     characteristics: `<ul><li>1 × 0-10 VDC output</li><li>Programming by FreeDOM Software</li><li>Check status by LEDS</li><li>Rail DIN assembly</li><li>Blocks with borders to be screwed</li></ul>`,
@@ -98,6 +105,7 @@ export const products = [
     name: "MPW 80-AC",
     category: "variation_modules",
     categoryLabel: "Variation Modules",
+    hasDetail: true,
     info: "Control CPU for circuits with variable intensity",
     description: `<p>The CPU control unit is a dimmable intelligent electronic card (RAM, FLASH & EEPROM) for the acquisition of eight potential free contacts and to manage 8 outlets pulse width modulation (PWM) in very low voltage (VLV).</p>
 <p>PWM outputs are synchronized to the mains frequency (240VAC) at a frequency of 100 Hz. The connected phase acts as a reference for the variation on the other phases.</p>`,
@@ -109,6 +117,7 @@ export const products = [
     name: "MPW 80-DC",
     category: "variation_modules",
     categoryLabel: "Variation Modules",
+    hasDetail: true,
     info: "Control CPU for circuits with variable intensity",
     description: `<p>The CPU control unit is a dimmable intelligent electronic card (RAM, FLASH & EEPROM) for the acquisition of eight potential free contacts and to manage 8 outlets pulse width modulation (PWM) in very low voltage (VLV).</p>
 <p>PWM outputs are synchronized to the mains frequency (240VAC) at a frequency of 200 Hz. The connected phase acts as a reference for the variation on the other phases.</p>`,
@@ -122,6 +131,7 @@ export const products = [
     name: "MDI 3200",
     category: "acquisition_modules",
     categoryLabel: "Acquisition Modules",
+    hasDetail: true,
     info: "Acquisition CPU for potentialfree contacts",
     description: `<p>The acquisition CPU is an intelligent electronic card (RAM, ROM and EEPROM) for the acquisition of 32 free of potential contacts for the management of input within the framework of a technical centralized management (GTC). It is preferable to use a shielded cable for input connections.</p>
 <p>The module allows the management of 16 time counters and 16 impulse counters. In the latest firmware version, we can choose either time or pulse counter for each input.</p>`,
@@ -133,6 +143,7 @@ export const products = [
     name: "MAI 8 VI-IN",
     category: "acquisition_modules",
     categoryLabel: "Acquisition Modules",
+    hasDetail: true,
     info: "Acquisition CPU for 4-20 mA & 0-10 V",
     description: `<p>The acquisition CPU is an intelligent electronic card (RAM, ROM and EEPROM) for the acquisition of 8 potential free contacts and/or 8 analogical 4-20mA signals and/or 0-10V for input management within a GTC framework (defect alarms, temperature, pressure). It is preferable to use a shielded cable for analogical inputs.</p>
 <p>The Freedom GTC software enables the acquisition of analog values and fault contacts that will be used in the monitoring and analysis of the building.</p>`,
@@ -144,6 +155,7 @@ export const products = [
     name: "MPT 80-1000",
     category: "acquisition_modules",
     categoryLabel: "Acquisition Modules",
+    hasDetail: true,
     info: "Acquisition CPU for PT1000 sensor",
     description: `<p>The PT1000 CPU measurement sensor is an intelligent electronic card (RAM, FLASH & EEPROM) for the acquisition of 8 temperatures using PT1000 temperature sensors (IEC60751 standard). Shielded cable is preferred for input connections.</p>
 <p>A set of measurable functions makes it possible to integrate a temperature control like a thermostat in heating and cooling applications. The home automation software and GTC FreeDOM also allows module programming and supervision.</p>`,
@@ -179,6 +191,7 @@ export const products = [
     name: "BAT-SST-4000",
     category: "control_modules",
     categoryLabel: "Control Modules",
+    hasDetail: true,
     info: "Room thermostat display (Square)",
     description: `<p>BAT-SST-4000 series Modern Square Touch Screen Room Thermostats are designed for the ON/OFF control of fans and valves in air conditioning applications, comparing room temperature and setting temperature to achieve comfort and energy saving.</p>
 <p>BAT-SST-4000 is a microprocessor-based thermostat with LCD display.</p>`,
@@ -190,6 +203,7 @@ export const products = [
     name: "BAT-SRT-4500",
     category: "control_modules",
     categoryLabel: "Control Modules",
+    hasDetail: true,
     info: "Room thermostat display (Round)",
     description: `<p>BAT-SRT-4500 series Modern Round Touch Screen Room Thermostats are designed for the ON/OFF control of fans and valves in air conditioning applications, comparing room temperature and setting temperature to achieve comfort and energy saving.</p>
 <p>BAT-SRT-4500 is a microprocessor-based thermostat with LCD display.</p>`,
@@ -214,6 +228,7 @@ export const products = [
     name: "MEI 9619-0 RS-232",
     category: "communication_modules",
     categoryLabel: "Communication Modules",
+    hasDetail: true,
     info: "PC Interface Module",
     description: `<p>The Computer Interface allows the communication between the BAT BUS system and the computer through the RS-232 cable and it is used for the connection with the BUS and with the automation management and monitoring system.</p>
 <p>The Computer interface is also used to program the modules from the BAT network using FreeDOM Software. The Home Automation & FreeDOM Software allow the programming and supervision of the modules.</p>`,
@@ -225,6 +240,7 @@ export const products = [
     name: "MEI 19200 RS-485",
     category: "communication_modules",
     categoryLabel: "Communication Modules",
+    hasDetail: true,
     info: "PC Interface Module",
     description: `<p>The MEI 19200 interface module allows sending commands to the unidirectional bus through an external interface RS485. The interface has 120 memories that will be activated/deactivated by commands sent from the external system. These memories are then transferred to any other module in the automation system.</p>
 <p>The MEI 19200 is also used to program the BAT network modules using FreeDOM Software.</p>`,
@@ -236,6 +252,7 @@ export const products = [
     name: "MIREP 187.5",
     category: "communication_modules",
     categoryLabel: "Communication Modules",
+    hasDetail: true,
     info: "CPU Repeater",
     description: `<p>The Repartitor (Dispatcher) module allows communicating between the Super BUS and the Field BUS. In the case of a BUS structure constructed behind a super BUS, the dispatcher allows the separation of the modules of a Field BUS from another BUS.</p>`,
     characteristics: `<ul><li>2 bus with galvanic insulation</li><li>Only 1 power supply needed</li><li>Message collision is not possible between bus sections</li></ul>`,
@@ -246,6 +263,7 @@ export const products = [
     name: "MRP 9619-0",
     category: "communication_modules",
     categoryLabel: "Communication Modules",
+    hasDetail: true,
     info: "CPU Repeater",
     description: `<p>The repeater module is used to split a BUS when the bus cable length exceeds 100 meters or there are more than 32 modules. The lower left BUS connector feeds the electronics and leads to BUS 1. The BUS 2 connector does not require a power source.</p>`,
     characteristics: `<ul><li>Programming by FreeDOM software</li><li>SUPER BUS connector for connection with the other dispatchers</li><li>Field BUS connector for connection to the modules</li><li>Rail DIN Assembly</li><li>Extractable connector</li></ul>`,
@@ -365,6 +383,7 @@ export const products = [
     name: "MDL 24-4101 Smart Dimmer",
     category: "kit_smart_dimmer_led",
     categoryLabel: "KIT Smart Dimmer LED",
+    hasDetail: true,
     info: "Smart Dimmer LED 12-24",
     description: `<p>The CPU with variable intensity is an intelligent electronic card (RAM, ROM and EEPROM) for the acquisition of 8 free of potential contacts and for managing 4 dimming outputs. The first four inputs are for independent control of the 4 outputs via pushbuttons; the last four entries are for scenario activation.</p>
 <p>The CPU operates independently of other modules. It has a default programming — once installed, it does not require any additional programming.</p>`,

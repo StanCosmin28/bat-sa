@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Download, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ChevronRight } from 'lucide-react';
 import { products } from '../data/products';
 import AnimatedSection from '../components/AnimatedSection';
 import ProductCard from '../components/ProductCard';
@@ -14,12 +14,14 @@ const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('description');
+  const [imageView, setImageView] = useState('front');
 
   const product = products.find(p => p.key === id);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     setActiveTab('description');
+    setImageView('front');
   }, [id]);
 
   if (!product) {
@@ -55,20 +57,35 @@ const ProductDetail = () => {
             </button>
           </div>
 
-          {/* Clean product image with fake shadow and mix-blend to remove white background */}
+          {/* Product image */}
           <div className="flex-1 flex items-center justify-center relative w-full h-full max-h-[50vh] lg:max-h-[70vh]">
             <AnimatedSection className="w-full h-full flex items-center justify-center relative">
-
-              {/* Fake Ground Shadow behind the product */}
               <div className="absolute top-[60%] left-1/2 -translate-x-1/2 w-[60%] h-[30%] bg-bat-navy/15 blur-2xl rounded-full opacity-60"></div>
-
               <img
-                src={`/images/products/${product.key}.webp`}
+                key={imageView}
+                src={`/images/products/${product.key}${imageView === 'detail' ? '_detail' : ''}.webp`}
                 alt={product.name}
                 className="w-full h-full object-contain relative z-10 hover:scale-105 transition-transform duration-700 ease-out mix-blend-darken"
               />
             </AnimatedSection>
           </div>
+
+          {/* Front / Detail toggle — only for products that have a detail image */}
+          {product.hasDetail && (
+            <div className="relative z-20 flex items-center gap-2 mt-4 bg-bat-navy/5 p-1 rounded-full">
+              {['front', 'detail'].map((view) => (
+                <button
+                  key={view}
+                  onClick={() => setImageView(view)}
+                  className={`px-5 py-2 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-widest transition-colors duration-300 ${
+                    imageView === view ? 'bg-bat-navy text-white' : 'text-bat-navy/50 hover:text-bat-navy'
+                  }`}
+                >
+                  {view === 'front' ? t('detail.viewFront') : t('detail.viewBack')}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Right: Typography & Details (Scrollable) */}
@@ -87,15 +104,13 @@ const ProductDetail = () => {
               {product.info}
             </p>
 
-            <a
-              href={`/data_sheets/${product.key}.pdf`}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/contact"
               className="group w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-bat-navy text-white font-bold py-4 px-10 rounded-full hover:bg-bat-blue transition-all duration-300"
             >
-              <Download size={20} className="group-hover:-translate-y-0.5 transition-transform" />
-              {t('detail.download')}
-            </a>
+              {t('common.requestDemo')}
+              <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
           </AnimatedSection>
 
           {/* Sleek Animated Tabs */}
@@ -120,8 +135,10 @@ const ProductDetail = () => {
               ))}
             </div>
 
-            {/* Tab Content */}
-            <div className="flex-grow min-h-[400px]">
+            {/* Tab Content — fixed height + internal scroll so switching tabs never
+                changes this column's height (that was shifting the sticky image on
+                the left, since a taller/shorter tab changed the row's total height) */}
+            <div className="h-[420px] overflow-y-auto pr-2 sm:pr-4">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeTab}
