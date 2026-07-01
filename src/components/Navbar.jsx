@@ -12,7 +12,7 @@ const Navbar = () => {
 
   // Check if current route starts with a light (white) hero
   // Home and Products have white heroes, other pages have dark navy heroes
-  const isLightHeroPage = location.pathname === '/' || location.pathname.startsWith('/products');
+  const isLightHeroPage = location.pathname === '/' || location.pathname.startsWith('/products') || location.pathname === '/contact';
 
   useEffect(() => {
     const handleScroll = () => {
