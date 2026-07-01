@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from "react";
+import React, { Suspense, lazy, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
@@ -6,6 +6,25 @@ import AnimatedSection from "./AnimatedSection";
 
 // Lazy load Spline to prevent it from blocking the initial render
 const Spline = lazy(() => import("@splinetool/react-spline"));
+
+// Spline's engine is ~1.3MB+ gzip on its own (physics/WASM init blocks the
+// main thread while it starts up) — too heavy to justify on mobile. Mobile
+// gets a ~170KB pre-rendered loop of the same animation instead; desktop
+// keeps the live, interactive Spline canvas.
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches
+  );
+
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 768px)");
+    const handleChange = (e) => setIsDesktop(e.matches);
+    query.addEventListener("change", handleChange);
+    return () => query.removeEventListener("change", handleChange);
+  }, []);
+
+  return isDesktop;
+}
 
 // The library resolving isn't the same as the scene being ready to look at —
 // Spline's own onLoad fires once it has actually rendered a first frame.
@@ -27,6 +46,7 @@ function SplineScene({ scene, className }) {
 
 const HeroV2 = () => {
   const { t } = useLanguage();
+  const isDesktop = useIsDesktop();
 
   return (
     <section className="relative h-screen min-h-[700px] w-full overflow-hidden bg-[#fafcff]">
@@ -34,12 +54,26 @@ const HeroV2 = () => {
       <div className="absolute top-0 right-0 w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] bg-bat-blue/10 rounded-full blur-[120px] pointer-events-none z-0 translate-x-1/4 -translate-y-1/4" />
       <div className="absolute bottom-0 left-0 w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-bat-gold/10 rounded-full blur-[120px] pointer-events-none z-0 -translate-x-1/4 translate-y-1/4" />
 
-      {/* ── Layer 2: Full Screen 3D Spline Canvas ── */}
+      {/* ── Layer 2: Hero Visual — live Spline canvas on desktop, a ~170KB pre-rendered loop on mobile ── */}
       <div className="absolute inset-0 z-10 w-full h-full">
-        <SplineScene
-          scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-          className="w-full h-full object-cover"
-        />
+        {isDesktop ? (
+          <SplineScene
+            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <video
+            className="w-full h-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+            poster="/videos/hero-robot-poster.webp"
+          >
+            <source src="/videos/hero-robot-mobile.webm" type="video/webm" />
+            <source src="/videos/hero-robot-mobile.mp4" type="video/mp4" />
+          </video>
+        )}
       </div>
 
       {/* ── Layer 3: Gradient Protection for Text ── */}

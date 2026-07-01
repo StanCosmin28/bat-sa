@@ -20,6 +20,9 @@ const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 const Freedom = lazy(() => import("./pages/Freedom"));
 const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+// Temporary utility route for screen-recording the Spline animation — not
+// linked anywhere, safe to delete once the mobile video/GIF is captured.
+const SplinePreview = lazy(() => import("./pages/SplinePreview"));
 
 const PageFallback = () => (
   <div className="min-h-[60vh] flex items-center justify-center">
@@ -38,28 +41,47 @@ const ScrollToTop = () => {
   return null;
 };
 
+function AppLayout() {
+  const { pathname } = useLocation();
+  const isBarePreview = pathname === "/spline-preview";
+
+  if (isBarePreview) {
+    return (
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/spline-preview" element={<SplinePreview />} />
+        </Routes>
+      </Suspense>
+    );
+  }
+
+  return (
+    <div className="flex flex-col min-h-screen font-sans selection:bg-bat-blue selection:text-white bg-gray-50">
+      <Navbar />
+      <main className="flex-grow">
+        <Suspense fallback={<PageFallback />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/products/:id" element={<ProductDetail />} />
+            <Route path="/freedom" element={<Freedom />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
 function App() {
   return (
     <LanguageProvider>
       <Router>
         <ScrollToTop />
-        <div className="flex flex-col min-h-screen font-sans selection:bg-bat-blue selection:text-white bg-gray-50">
-          <Navbar />
-          <main className="flex-grow">
-            <Suspense fallback={<PageFallback />}>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/products/:id" element={<ProductDetail />} />
-                <Route path="/freedom" element={<Freedom />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
-          </main>
-          <Footer />
-        </div>
+        <AppLayout />
       </Router>
     </LanguageProvider>
   );
