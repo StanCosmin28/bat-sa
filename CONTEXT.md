@@ -8,18 +8,23 @@ Dă acest fișier lui Claude Code la începutul oricărei conversații noi despr
 
 Site de prezentare pentru **BAT (Building Automation Transmission) — Btg SA**, o companie din Luxembourg specializată în sisteme de automatizare a clădirilor.
 
-**Site original (vechi):** https://bat-sa.com  
+**Site original (vechi):** https://bat-sa.com
 **Date contact:** Esplanade Street 50 L - 9227 Diekirch 20, Luxembourg | info@bat-sa.com | +32 476 424 372
+
+**Deploy:** Vercel, conectat la GitHub `StanCosmin28/bat-sa` (branch `main`). Domeniu: `bat-pink.vercel.app`.
+⚠️ Există și un proiect Vercel vechi numit doar `bat`, creat automat dintr-un repo gol (template Vite generic) — e nefolosit/mort, nu-l confunda cu proiectul real.
 
 ---
 
 ## Stack tehnic
 
-- **React + Vite** (nu Next.js)
-- **Tailwind CSS** cu culori custom definite în `tailwind.config.js`
-- **Framer Motion** pentru animații scroll
-- **React Router v6** pentru routing
-- **Fișiere traduceri JSON** în `src/locales/en.json`, `fr.json`, `ro.json`
+- **React 19 + Vite 8** (nu Next.js)
+- **Tailwind CSS v3** cu culori custom în `tailwind.config.js`: `bat.navy` (#1a2744), `bat.blue` (#3b82f6), `bat.gold` (#f59e0b), `bat.teal`, `navyLight`, `goldLight`
+- **Framer Motion** pentru animații scroll (`AnimatedSection`)
+- **React Router v7** — rute lazy-loaded (`React.lazy`) în `App.jsx`, exceptând `Home` (eager, e cea mai vizitată)
+- **@splinetool/react-spline** — scenă 3D interactivă în Hero-ul de pe Home, doar pe desktop
+- **@react-three/fiber + @react-three/drei + three** — instalate pentru un experiment cu un robot GLB propriu (`LavenderBotScene.jsx`), în prezent **neconectat nicăieri** (cod mort, păstrat pentru mai târziu dacă se renunță la Spline)
+- Fișiere traduceri **JSON separate**: `src/locales/en.json`, `fr.json`, `ro.json` (NU sunt inline în `LanguageContext.jsx` — acela doar le importă și expune hook-ul `useLanguage()` / `t('cheie')`)
 
 ---
 
@@ -28,33 +33,78 @@ Site de prezentare pentru **BAT (Building Automation Transmission) — Btg SA**,
 ```
 src/
 ├── pages/
-│   ├── Home.jsx           ← Hero, Pillars, Industries, Ecosystem, FreeDOM teaser, CTA
+│   ├── Home.jsx            ← doar orchestrator: HeroV2 + secțiuni din components/home/
 │   ├── About.jsx
-│   ├── Products.jsx       ← grid cu filtru categorie + search
-│   ├── ProductDetail.jsx  ← tabs: Description / Characteristics / Wiring
-│   ├── Freedom.jsx
+│   ├── Products.jsx        ← grid 2 coloane pe mobil, 3-4 pe desktop, filtru categorie + search
+│   ├── ProductDetail.jsx   ← tabs Description/Characteristics/Wiring, toggle Front/Detail
+│   ├── Freedom.jsx         ← include <DesktopShowcase /> (laptop mockup CSS)
 │   ├── Contact.jsx
+│   ├── SplinePreview.jsx   ← utilitar, ruta /spline-preview, NU e în navbar (vezi mai jos)
 │   └── NotFound.jsx
 ├── components/
-│   ├── Navbar.jsx         ← sticky, transparent pe dark hero, alb la scroll
-│   ├── Footer.jsx         ← dark bat-navy background
-│   ├── ProductCard.jsx
-│   ├── AnimatedSection.jsx
-│   └── PhoneMockup.jsx    ← suportă variant="iphone" și variant="samsung"
+│   ├── Navbar.jsx          ← recunoaște hero light (text dark) pe: "/", "/products", "/contact"
+│   ├── Footer.jsx
+│   ├── HeroV2.jsx          ← Hero-ul real de pe Home (vezi secțiunea dedicată mai jos)
+│   ├── ProductCard.jsx     ← 2 coloane pe mobil, tot cardul e Link, imagine locală
+│   ├── PhoneMockup.jsx     ← variant="iphone" | "samsung", frame SVG din /public
+│   ├── LaptopMockup.jsx    ← mockup laptop 100% CSS (fără SVG), pentru Freedom
+│   ├── LavenderBotScene.jsx← robot GLB (react-three-fiber), NEFOLOSIT momentan
+│   ├── MunnRobotScene.jsx  ← robot generat procedural (sfere), NEFOLOSIT, versiune veche
+│   ├── AnimatedSection.jsx ← wrapper scroll-reveal, suportă staggerChildren/staggerDelay/itemDuration
+│   ├── home/
+│   │   ├── Pillars.jsx         ← Economic/Security/Comfort, 3 carduri egale
+│   │   ├── Industries.jsx      ← Hotels/Hospitals/Offices/Residential
+│   │   ├── IosShowcase.jsx     ← 2 iPhone-uri suprapuse, accent blue
+│   │   ├── Ecosystem.jsx       ← dashboard + listă beneficii
+│   │   ├── AndroidShowcase.jsx ← 2 Samsung suprapuse, accent gold
+│   │   ├── FreedomTeaser.jsx   ← secțiune dark, link spre /freedom
+│   │   └── ContactCta.jsx      ← CTA final, bg bat-blue
+│   └── freedom/
+│       └── DesktopShowcase.jsx ← folosește LaptopMockup, în Freedom.jsx
 ├── context/
-│   └── LanguageContext.jsx  ← useLanguage() hook, t('cheie') pentru traduceri
+│   └── LanguageContext.jsx  ← useLanguage() hook, citește din src/locales/*.json
 ├── locales/
-│   ├── en.json            ← TOATE cheile de traducere în engleză
-│   ├── fr.json
-│   └── ro.json
+│   ├── en.json / fr.json / ro.json  ← TOATE cheile trebuie să existe în toate 3 (altfel fallback pe EN)
 └── data/
-    └── products.js        ← 33 produse COMPLET populate (description, characteristics, wiring)
+    └── products.js          ← 33 produse, cu description/characteristics/wiring (HTML), unele cu hasDetail:true
 
 public/
-└── images/
-    ├── products/          ← {product_key}.webp pentru fiecare produs (34 fișiere)
-    └── home/              ← home_app_1_en.webp ... home_app_5_en.webp
+├── images/
+│   ├── products/    ← {key}.webp (33, poze față — SINGURELE imagini de produs valide acum)
+│   │                  {key}_detail.webp (19 produse cu hasDetail:true — verificate, valide)
+│   └── home/        ← home_app_1..5_en.webp
+├── videos/
+│   ├── hero-robot-mobile.mp4   ← fallback video pentru Hero pe mobil (<768px)
+│   └── hero-robot-mobile.webm  ← variantă webm, încercată prima (mai mică)
+└── models/
+    └── lavender_bot.glb  ← model 3D (13MB), folosit doar de LavenderBotScene.jsx (nefolosit în UI)
 ```
+
+---
+
+## HeroV2.jsx — Hero-ul de pe Home (IMPORTANT, citește înainte să-l modifici)
+
+Fișierul e considerat **"gata, nu se mai modifică fără cerere explicită"** de către user — a fost iterat mult și e mulțumit de rezultat. Orice schimbare aici trebuie confirmată clar înainte.
+
+**Desktop (≥768px):** canvas Spline live, interactiv (`https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode`), lazy-loaded (`React.lazy`), fade-in doar când `onLoad` chiar se declanșează (nu doar când s-a încărcat libraria JS).
+
+**Mobil (<768px):** `<video>` cu `hero-robot-mobile.webm`/`.mp4`, **fără `poster`** (un poster static urmat de pop la pornirea video-ului arăta "stricat" — s-a scos intenționat), fade-in la `onCanPlay`. Motorul Spline (`@splinetool/react-spline` + runtime + fizică WASM) cântărește **~1.3MB+ gzip doar el**, plus poate bloca thread-ul principal la inițializare pe telefoane slabe — de asta nu se încarcă deloc pe mobil.
+
+**Loop-ul video-ului:** NU folosește atributul HTML `loop` (ar reseta mereu la 0, vizibil). Are `onEnded` custom care sare la `LOOP_RESTART_SECONDS = 4` (nu la 0) — prima redare e completă, reluările sar peste primele 4 secunde ca să nu pară că "resetează" de fiecare dată.
+
+**Cum s-a generat video-ul:** din ruta utilitară `/spline-preview` (`src/pages/SplinePreview.jsx`) — pagină goală, doar canvas Spline pe tot ecranul, cu un `mousemove` sintetic care mișcă scena automat (robotul reacționează la poziția mouse-ului) și `cursor-none` ca să nu apară cursorul în înregistrare. User-ul a înregistrat ecranul (QuickTime, mod mobil în DevTools) și mi-a dat fișierul `.mov`, eu l-am tăiat/comprimat cu `ffmpeg` (scale 1080px, 24fps, CRF 20 mp4 / CRF 26 webm — user a cerut calitate mai mare decât compresia inițială). Ruta rămâne în cod, nefolosită în navigare, sigur de șters dacă nu mai e nevoie.
+
+**Breakpoint 768px = și pragul pentru tablete** — o tabletă (ex: iPad) primește Spline (tratată ca desktop), nu video-ul. Confirmat explicit cu user-ul, e intenționat.
+
+---
+
+## Poze de produs — ATENȚIE, istoric de bug real
+
+User a adus 66 de fișiere `{key}_back.webp` + `{key}_wiring.webp` (pentru toate cele 33 produse) — **toate erau stricate**: fiecare era de fapt o pagină HTML (shell de aplicație, cu `<base href="/">`) salvată din greșeală cu extensia `.webp`. Au fost **șterse complet** din `public/images/products/`. Dacă apar din nou fișiere cu acest pattern de nume, **verifică cu `file nume.webp`** înainte să le folosești în cod — trebuie să zică `Web/P image`, nu `HTML document text`.
+
+În schimb, `{key}_detail.webp` (19 fișiere, pentru produsele cu `hasDetail: true` în `products.js`) **sunt reale și verificate** — acestea alimentează toggle-ul Front/Detail din `ProductDetail.jsx`.
+
+De asemenea, `public/data_sheets/*.pdf` (33 fișiere) a existat la un moment dat dar **a fost șters** (user a scos și butonul de download din `ProductDetail.jsx` în același timp) — nu mai există nicio referință în cod.
 
 ---
 
@@ -62,82 +112,55 @@ public/
 
 ```js
 bat: {
-  navy:      '#1a2744',   // fundal dark principal, text pe alb
+  navy:      '#1a2744',   // fundal dark principal
   navyLight: '#23355c',
   teal:      '#0f3460',
   tealLight: '#185296',
-  gold:      '#f59e0b',   // accent warm, CTA secundar
+  gold:      '#f59e0b',   // accent warm
   goldLight: '#fbbf24',
-  blue:      '#3b82f6',   // accent principal, kicker-uri, CTA primar
+  blue:      '#3b82f6',   // accent principal
 }
 ```
 
-**Regulă de design:** Fondul paginilor este alb (`bg-white`) sau very light gray (`bg-[#f8fafc]`). `bat-navy` pentru secțiuni dark, `bat-blue` pentru accent/CTA, `bat-gold` pentru highlights secundare.
+**Regulă de design (Loxone-inspired, din discuții anterioare):** whitespace generos, **un singur accent color per secțiune** (nu amesteca blue+gold în aceeași secțiune), `rounded-2xl` (16px) ca radius standard — nu `rounded-[3rem]` sau altele exagerate, kicker labels scurte (nu propoziții) deasupra titlurilor, puține animații dar bine alese, zero blob-uri decorative multiple.
 
 ---
 
 ## Clase CSS custom (din src/index.css)
 
 ```css
-.kicker          /* text-xs font-bold tracking-[0.2em] uppercase text-bat-blue mb-4 */
-.kicker-light    /* același dar text-bat-gold — pentru secțiuni dark */
-.section-title   /* text-4xl md:text-5xl font-black text-bat-navy tracking-tight */
-.section-title-light  /* același dar text-white */
-.card            /* bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg */
-.bg-grid-pattern /* subtle grid background pentru secțiunile dark */
-.bg-dot-pattern  /* subtle dot pattern pentru secțiuni light */
+.kicker / .kicker-light     /* label mic, uppercase, tracking larg */
+.section-title / .section-title-light
+.card                        /* bg-white rounded-2xl border shadow-sm hover:shadow-lg */
+.product-prose               /* stilizează HTML brut din dangerouslySetInnerHTML (p/ul/li/strong) */
+.bg-grid-pattern / .bg-dot-pattern / .bg-noise
+scrollbar hidden global (html::-webkit-scrollbar { display:none })
 ```
 
 ---
 
-## Pattern traduceri
+## Pattern traduceri — sursă frecventă de bug-uri
 
-Traducerile se adaugă în `src/locales/en.json` (+ fr.json + ro.json) și se folosesc cu:
-```jsx
-const { t } = useLanguage();
-// în JSX:
-<span>{t('cheie.traducere')}</span>
-```
+Cheile se adaugă în `src/locales/en.json` + `fr.json` + `ro.json`. **Dacă lipsește o cheie din vreo limbă, `t()` cade pe EN, apoi pe cheia brută** (ex: a apărut `common.all` literal pe ecran fiindcă acea cheie nu exista — codul trebuia să apeleze `cat.all`, care exista deja).
 
-Dacă adaugi o cheie nouă în en.json, adaug-o și în fr.json și ro.json (chiar dacă e același text deocamdată).
+**Bug real întâlnit:** listele `.map()` NU trebuie să folosească textul tradus ca `key` React — la schimbarea limbii, cheia se schimbă, React remontează elementul, iar `AnimatedSection` (whileInView + viewport once:true) rămâne blocat la opacity:0 pentru totdeauna. Folosește mereu un `id` stabil, independent de limbă.
 
 ---
 
-## Imagini
+## Note tehnice importante
 
-- **Produse:** `/images/products/{product_key}.webp`
-- **Home:** `/images/home/home_app_1_en.webp` ... `/images/home/home_app_5_en.webp`
-- Toate imaginile sunt descărcate local în `public/images/`
-
----
-
-## Date produse (src/data/products.js)
-
-Fiecare produs are:
-```js
-{
-  key: "mrm_80_1900",            // folosit în URL și imagine
-  name: "MRM 80-1900",
-  category: "power_modules",
-  categoryLabel: "Power Modules",
-  info: "Control CPU for relay circuits",  // scurt, pe card
-  description: `<p>...</p>`,     // HTML complet
-  characteristics: `<ul>...</ul>`,  // HTML complet
-  wiring: `<ul>...</ul>`,        // HTML (poate fi gol "")
-}
-```
-
-În ProductDetail.jsx, HTML-ul se afișează cu:
-```jsx
-<div dangerouslySetInnerHTML={{ __html: product.description }} />
-```
+1. **HTML în produse** — `description`/`characteristics`/`wiring` conțin HTML, afișate cu `dangerouslySetInnerHTML` + clasa `.product-prose` pentru stil.
+2. **Imagini locale** — `/images/products/{key}.webp`, `/images/home/home_app_{1-5}_en.webp`. Niciodată linkuri spre `bat-sa.com` (erau fragile, s-au înlocuit peste tot).
+3. **App.jsx** — rute lazy (`React.lazy` + `Suspense`), `AppLayout` intern ascunde Navbar/Footer doar pentru `/spline-preview`.
+4. **ProductDetail.jsx** — zona de conținut a tab-urilor are înălțime FIXĂ (`h-[420px] overflow-y-auto`), nu `min-h` — altfel descrieri de lungimi diferite schimbă înălțimea rândului și "sar" imaginea sticky din stânga.
+5. **Vercel** — `vercel.json` la rădăcină cu `buildCommand`, `outputDirectory: dist`, și rewrite SPA pentru React Router.
 
 ---
 
 ## Categorii produse (9 total)
 
-| key | Label | Produse |
-|-----|-------|---------|
+| key | Label | Nr. produse |
+|-----|-------|-------------|
 | power_modules | Power Modules | 4 |
 | variation_modules | Variation Modules | 6 |
 | acquisition_modules | Acquisition Modules | 3 |
@@ -148,52 +171,18 @@ Fiecare produs are:
 | kit_smart_dimmer_led | KIT Smart Dimmer LED | 1 |
 | certification | Certification | — |
 
----
-
-## Design inspiration: Loxone.com
-
-Site-ul se inspiră din Loxone.com dar cu culorile BAT:
-- **Mult whitespace** — padding-uri generoase (`py-32 md:py-40`)
-- **Un singur accent color per secțiune** — nu tot paleta odată
-- **Kicker labels** deasupra fiecărui titlu (`<span className="kicker">OUR PHILOSOPHY</span>`)
-- **border-radius modest** — `rounded-2xl` (16px), nu `rounded-[3rem]`
-- **Zero blob animations** — animații decorative eliminate
-- **Secțiuni alternante:** alb → light gray → alb → dark navy → blue CTA
-- **Editorial layout** — carduri de mărimi diferite, nu grid uniform 3×3
+Etichetele de categorie din filtrul de pe `/products` **rămân în engleză indiferent de limbă** — nu există încă traduceri pentru ele (decizie neluată încă, discutată dar nerezolvată).
 
 ---
 
-## Sectiunile Home.jsx (în ordine)
+## Plan de retuș — ce mai rămâne
 
-1. **Hero** — dark `bat-navy`, grid pattern subtil, un glow static, title + subtitle + 2 CTA + phone mockups
-2. **Pillars** — alb, bento grid: Economic (wide), Security (dark card), Comfort (full-width cu imagine)
-3. **Industries** — light gray, 4 carduri industrii: Hotels / Hospitals / Offices / Residential
-4. **Ecosystem** — alb, split layout: imagine stânga + text + lista beneficii dreapta
-5. **FreeDOM Teaser** — dark `bat-navy`, split: text stânga + screenshot software dreapta
-6. **Contact CTA** — `bat-blue` solid, centrat
-
----
-
-## Plan de retuș rămas (bifează pe rând)
-
-### Pagini de finalizat:
-- [ ] **Products.jsx** — Verifică filtrul categorii + search + grid carduri
-- [ ] **ProductCard.jsx** — Imagine locală, badge categorie, hover
-- [ ] **ProductDetail.jsx** — Tabs HTML, imagine mare, related products
-- [ ] **Freedom.jsx** — Adaugă `/images/home/home_app_5_en.webp`, completează texte
-- [ ] **About.jsx** — Completează cu conținut real
-- [ ] **Contact.jsx** — Formular complet, date contact
-
-### Componente:
-- [ ] **Navbar** — Active link styling, language switcher
-- [ ] **Footer** — Verifică linkuri
-
-### Traduceri:
-- [ ] Completează fr.json și ro.json cu cheile noi adăugate în en.json:
-  - `home.pillarsKicker`, `home.industriesKicker`, `home.industriesTitle`, `home.industriesSubtitle`
-  - `industry.hotels`, `industry.hotelsDesc`, `industry.hospitals`, `industry.hospitalsDesc`
-  - `industry.offices`, `industry.officesDesc`, `industry.residential`, `industry.residentialDesc`
-  - `home.appsKicker`, `home.freedomKicker`, `home.ctaTitle`, `home.ctaSubtitle`
+- [ ] Traduceri pentru etichetele de categorii (`power_modules` → "Power Modules" etc.) în FR/RO
+- [ ] `About.jsx` — conținut de finalizat
+- [ ] Poze `_back`/`_wiring` corecte pentru produse (cele vechi erau stricate, șterse)
+- [ ] `Footer.jsx` are un import `motion` neutilizat (warning oxlint minor)
+- [ ] Decizie: renunțăm la Spline în Hero (înlocuit cu `LavenderBotScene.jsx`, deja construit) sau rămânem cu split Spline-desktop/video-mobil (decizie curentă: **rămânem cu Spline**, user a ales explicit)
+- [ ] `src/pages/SplinePreview.jsx` — sigur de șters odată ce nu mai e nevoie de reînregistrat animația
 
 ---
 
@@ -201,6 +190,6 @@ Site-ul se inspiră din Loxone.com dar cu culorile BAT:
 
 La începutul unei sesiuni noi, spune lui Claude Code:
 
-> "Citește CONTEXT.md din folderul bat-sa și hai să continuăm lucrul pe website. Vreau să retuşăm [SECTIUNEA]."
+> "Citește CONTEXT.md din folderul bat-sa și hai să continuăm lucrul pe website."
 
-Claude va ști exact: stack, culori, structura fișierelor, pattern-uri, ce e de făcut.
+Claude va ști exact: stack, structura fișierelor, deciziile de design deja luate, bug-urile reale întâlnite (ca să nu le repete), și ce mai e de făcut.

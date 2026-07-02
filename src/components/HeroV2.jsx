@@ -30,15 +30,36 @@ function useIsDesktop() {
 // Spline's own onLoad fires once it has actually rendered a first frame.
 // We fade it in only then, so it never pops in abruptly; the ambient glows
 // in Layer 1 keep the background from looking empty in the meantime.
-function SplineScene({ scene, className }) {
+//
+// `active` tracks whether the hero is actually on screen. Spline runs its
+// own render loop (WASM physics + three.js) that keeps burning CPU/GPU even
+// while scrolled far out of view — `app.stop()/play()` (exposed via onLoad)
+// pauses that loop without unmounting the canvas, so there's no reload/flash
+// when the user scrolls back up.
+function SplineScene({ scene, className, active }) {
   const [ready, setReady] = useState(false);
+  const appRef = useRef(null);
+
+  useEffect(() => {
+    if (!appRef.current) return;
+    if (active) appRef.current.play();
+    else appRef.current.stop();
+  }, [active]);
 
   return (
     <Suspense fallback={null}>
       <div
         className={`w-full h-full transition-opacity duration-1000 ease-out ${ready ? "opacity-100" : "opacity-0"}`}
       >
-        <Spline scene={scene} className={className} onLoad={() => setReady(true)} />
+        <Spline
+          scene={scene}
+          className={className}
+          onLoad={(app) => {
+            appRef.current = app;
+            if (!active) app.stop();
+            setReady(true);
+          }}
+        />
       </div>
     </Suspense>
   );
@@ -53,9 +74,18 @@ const LOOP_RESTART_SECONDS = 4;
 // No poster — a still frame that then "jumps" into motion once the video
 // buffers reads as broken. Stay on the plain background (Layer 1's glows)
 // and fade the video in only once it can actually play.
-function MobileHeroVideo() {
+function MobileHeroVideo({ active }) {
   const [ready, setReady] = useState(false);
   const videoRef = useRef(null);
+
+  // Same idea as the desktop Spline canvas: pause decoding once the hero
+  // scrolls out of view instead of leaving it playing off-screen forever.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (active) video.play().catch(() => {});
+    else video.pause();
+  }, [active]);
 
   return (
     <video
@@ -81,9 +111,24 @@ function MobileHeroVideo() {
 const HeroV2 = () => {
   const { t } = useLanguage();
   const isDesktop = useIsDesktop();
+  const sectionRef = useRef(null);
+  // Starts true (hero is what's on screen on first paint); IntersectionObserver
+  // flips it once the user scrolls the hero out of the viewport, so the
+  // Spline canvas / mobile video can stop doing work while it's not visible.
+  const [inView, setInView] = useState(true);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
+      threshold: 0,
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section className="relative h-screen min-h-[700px] w-full overflow-hidden bg-[#fafcff]">
+    <section ref={sectionRef} className="relative h-screen min-h-[700px] w-full overflow-hidden bg-[#fafcff]">
       {/* ── Layer 1: Ambient Glows ── */}
       <div className="absolute top-0 right-0 w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] bg-bat-blue/10 rounded-full blur-[120px] pointer-events-none z-0 translate-x-1/4 -translate-y-1/4" />
       <div className="absolute bottom-0 left-0 w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-bat-gold/10 rounded-full blur-[120px] pointer-events-none z-0 -translate-x-1/4 translate-y-1/4" />
@@ -94,9 +139,10 @@ const HeroV2 = () => {
           <SplineScene
             scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
             className="w-full h-full object-cover"
+            active={inView}
           />
         ) : (
-          <MobileHeroVideo />
+          <MobileHeroVideo active={inView} />
         )}
       </div>
 
