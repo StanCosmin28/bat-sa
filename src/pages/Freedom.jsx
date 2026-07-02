@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PhoneMockup from '../components/PhoneMockup';
 import AnimatedSection from '../components/AnimatedSection';
 import DesktopShowcase from '../components/freedom/DesktopShowcase';
+import ContactCta from '../components/home/ContactCta';
 import { useLanguage } from '../context/LanguageContext';
 
 const Freedom = () => {
@@ -48,26 +49,26 @@ const Freedom = () => {
                   {t('common.exploreFeatures')}
                 </a>
               </div>
+
+              {/* Compact trust strip — reuses the same feature copy shown below,
+                  just surfaced immediately so the hero doesn't read as empty
+                  once the CTAs are done. */}
+              <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 mt-16 pt-10 border-t border-white/10">
+                {[
+                  { icon: <Activity size={16} />, label: t('freedom.feat2') },
+                  { icon: <Shield size={16} />, label: t('freedom.feat5') },
+                  { icon: <Smartphone size={16} />, label: t('freedom.feat6') },
+                ].map(({ icon, label }) => (
+                  <div key={label} className="flex items-center gap-2 text-gray-400 text-sm font-medium tracking-wide">
+                    <span className="text-bat-blue">{icon}</span>
+                    {label}
+                  </div>
+                ))}
+              </div>
             </AnimatedSection>
           </div>
         </div>
       </div>
-
-      {/* Dashboard Preview */}
-      <section className="relative z-20 pb-32">
-        <div className="container mx-auto px-6 lg:px-12">
-          <AnimatedSection delay={0.2} className="relative mx-auto max-w-6xl">
-            <div className="absolute -inset-1 bg-gradient-to-r from-bat-blue via-bat-teal to-bat-gold rounded-[2.5rem] blur opacity-30 animate-pulse" />
-            <div className="relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 bg-[#0a101f] p-2">
-              <img
-                src="/images/home/home_app_5_en.webp"
-                alt="FreeDOM Dashboard on PC"
-                className="w-full h-auto rounded-[1.5rem]"
-              />
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
 
       {/* Features Grid */}
       <section id="features" className="py-32 bg-white relative rounded-t-[3rem]">
@@ -95,7 +96,7 @@ const Freedom = () => {
 
       <DesktopShowcase />
 
-      {/* BMS Web */}
+      {/* BMS Web — removed, PhoneMockup screens were blank/broken here, revisit later
       <section className="py-32 bg-[#f8fafc] border-t border-gray-100">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex flex-col-reverse lg:flex-row items-center gap-20">
@@ -128,7 +129,9 @@ const Freedom = () => {
               </p>
               <ul className="space-y-6">
                 {[
-                  "Instant push notifications for alarms"
+                  t('freedom.accessBullet1'),
+                  t('freedom.accessBullet2'),
+                  t('freedom.accessBullet3'),
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-4 text-gray-700 font-medium text-lg">
                     <div className="w-8 h-8 rounded-full bg-bat-blue/10 flex items-center justify-center text-bat-blue shrink-0">
@@ -142,6 +145,9 @@ const Freedom = () => {
           </div>
         </div>
       </section>
+      */}
+
+      <ContactCta />
     </div>
   );
 };

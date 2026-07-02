@@ -1,25 +1,36 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { motion } from "framer-motion";
 
-// iPhone frame SVG is landscape natively, so it gets rotated 90deg into portrait.
-// Samsung frame SVG is already portrait, so it's placed directly, no rotation needed.
-const FRAMES = {
+// Pure CSS/Tailwind device frame — same technique as LaptopMockup. The
+// iphone_16.svg / samsung_phone.svg assets looked right as flat icons but
+// turned out to be solid silhouettes with an opaque #333 "screen" baked in
+// (no transparent cutout), so layering them over a real screenshot just
+// hid the screenshot behind solid gray/black no matter what image was
+// passed in. Building the bezel ourselves guarantees the screenshot is
+// always the thing actually visible.
+const VARIANTS = {
   iphone: {
-    src: '/iphone_16.svg',
-    alt: 'iPhone 16 Frame',
-    rotate: true,
-    frameClass: 'w-[280px] h-[570px] sm:w-[320px] sm:h-[652px]',
+    frameClass: "w-[280px] h-[570px] sm:w-[320px] sm:h-[652px]",
+    frameRadius: "rounded-[2.5rem] sm:rounded-[3rem]",
+    screenRadius: "rounded-[2rem] sm:rounded-[2.4rem]",
+    notch: "pill",
   },
   samsung: {
-    src: '/samsung_phone.svg',
-    alt: 'Samsung Galaxy Frame',
-    rotate: false,
-    frameClass: 'w-[280px] h-[580px] sm:w-[320px] sm:h-[663px]',
+    frameClass: "w-[280px] h-[580px] sm:w-[320px] sm:h-[663px]",
+    frameRadius: "rounded-[2rem] sm:rounded-[2.4rem]",
+    screenRadius: "rounded-[1.6rem] sm:rounded-[1.9rem]",
+    notch: "dot",
   },
 };
 
-const PhoneMockup = ({ imgSrc, altText, delay = 0, className = '', variant = 'iphone' }) => {
-  const frame = FRAMES[variant] ?? FRAMES.iphone;
+const PhoneMockup = ({
+  imgSrc,
+  altText,
+  delay = 0,
+  className = "",
+  variant = "iphone",
+}) => {
+  const v = VARIANTS[variant] ?? VARIANTS.iphone;
 
   return (
     <motion.div
@@ -29,31 +40,32 @@ const PhoneMockup = ({ imgSrc, altText, delay = 0, className = '', variant = 'ip
       transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
       className={`relative inline-block ${className}`}
     >
-      {/* Strict portrait container. */}
-      <div className={`relative filter drop-shadow-2xl overflow-hidden rounded-[2.5rem] sm:rounded-[3rem] bg-black ${frame.frameClass}`}>
+      {/* Bezel */}
+      <div
+        className={`relative filter drop-shadow-2xl bg-black p-2 sm:p-2.5 ${v.frameRadius} ${v.frameClass}`}
+      >
+        {/* Side buttons, pure detail */}
+        <div className="absolute -left-[2px] top-20 sm:top-24 w-[2px] h-6 sm:h-8 bg-black/80 rounded-l-sm" />
+        <div className="absolute -left-[2px] top-32 sm:top-40 w-[2px] h-10 sm:h-12 bg-black/80 rounded-l-sm" />
+        <div className="absolute -right-[2px] top-28 sm:top-36 w-[2px] h-12 sm:h-16 bg-black/80 rounded-r-sm" />
 
-        {/* The screenshot (under the bezel) */}
-        <div className="absolute inset-0 z-10 w-full h-full p-2 flex items-center justify-center">
-          <div className="relative w-full h-full rounded-[2.2rem] sm:rounded-[2.6rem] overflow-hidden bg-gray-900">
-            <img
-              src={imgSrc}
-              alt={altText}
-              className="w-full h-full object-cover object-top"
-            />
-          </div>
+        {/* Screen (the actual screenshot layer) */}
+        <div
+          className={`relative w-full h-full overflow-hidden bg-gray-900 ${v.screenRadius}`}
+        >
+          {/* <img
+            src={imgSrc}
+            alt={altText}
+            className="w-full h-full object-cover object-top"
+          /> */}
         </div>
 
-        {/* Frame overlay - rotated into portrait for iPhone, placed as-is for Samsung */}
-        {frame.rotate ? (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-90 z-20 pointer-events-none w-[570px] h-[280px] sm:w-[652px] sm:h-[320px] flex items-center justify-center">
-            <img src={frame.src} alt={frame.alt} className="w-full h-full pointer-events-none" />
-          </div>
+        {/* Notch / camera cutout, drawn on top of the screen */}
+        {v.notch === "pill" ? (
+          <div className="absolute top-2 sm:top-2.5 left-1/2 -translate-x-1/2 w-20 sm:w-24 h-5 sm:h-6 bg-black rounded-full z-20 pointer-events-none" />
         ) : (
-          <div className="absolute inset-0 z-20 pointer-events-none w-full h-full flex items-center justify-center">
-            <img src={frame.src} alt={frame.alt} className="w-full h-full pointer-events-none" />
-          </div>
+          <div className="absolute top-3 sm:top-4 left-1/2 -translate-x-1/2 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-black rounded-full ring-4 ring-black/40 z-20 pointer-events-none" />
         )}
-
       </div>
     </motion.div>
   );

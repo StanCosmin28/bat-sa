@@ -120,6 +120,9 @@
   "freedom.responsiveTitle": "BMS Web Adaptabil",
   "freedom.accessTitle": "Acces oriunde, oricând.",
   "freedom.accessBody": "Fie că ești la birou pe un PC, mergi pe teren cu o tabletă sau ești în afara locației cu smartphone-ul tău, interfața web adaptabilă FreeDOM te menține perfect conectat.",
+  "freedom.accessBullet1": "Notificări push instant pentru fiecare alarmă și eveniment",
+  "freedom.accessBullet2": "Sincronizare live pe toate dispozitivele, fără configurare",
+  "freedom.accessBullet3": "Control total din orice browser, fără nicio instalare",
 
   "about.kicker": "Povestea Noastră",
   "about.title": "Pionierii Viitorului în Automatizarea Clădirilor",

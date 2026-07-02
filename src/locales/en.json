@@ -121,6 +121,9 @@
   "freedom.responsiveTitle": "Responsive BMS Web",
   "freedom.accessTitle": "Access anywhere, anytime.",
   "freedom.accessBody": "Whether you are at your desk on a PC, walking the floors with a tablet, or off-site with your smartphone, FreeDOM's responsive web interface keeps you perfectly connected.",
+  "freedom.accessBullet1": "Instant push notifications for every alarm and event",
+  "freedom.accessBullet2": "Live sync across every device, zero setup required",
+  "freedom.accessBullet3": "Full control from any browser — no app install needed",
 
   "about.kicker": "Our Story",
   "about.title": "Pioneering the Future of Building Automation",

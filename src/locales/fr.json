@@ -120,6 +120,9 @@
   "freedom.responsiveTitle": "BMS Web Réactif",
   "freedom.accessTitle": "Accédez partout, à tout moment.",
   "freedom.accessBody": "Que vous soyez à votre bureau sur un PC, dans les étages avec une tablette ou à l'extérieur avec votre smartphone, l'interface web réactive de FreeDOM vous garde parfaitement connecté.",
+  "freedom.accessBullet1": "Notifications push instantanées pour chaque alarme et événement",
+  "freedom.accessBullet2": "Synchronisation en direct sur tous vos appareils, sans configuration",
+  "freedom.accessBullet3": "Contrôle total depuis n'importe quel navigateur, sans installation",
 
   "about.kicker": "Notre Histoire",
   "about.title": "Pionniers de l'Automatisation des Bâtiments",

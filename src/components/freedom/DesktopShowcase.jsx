@@ -3,8 +3,9 @@ import AnimatedSection from "../AnimatedSection";
 import LaptopMockup from "../LaptopMockup";
 import { useLanguage } from "../../context/LanguageContext";
 
-// Placeholder screenshot — swap for a real BMS Web desktop capture once available.
-const PLACEHOLDER_IMG = "/images/home/home_app_5_en.webp";
+// Cropped from the existing template screenshot set (screen content only, no
+// device bezel baked in) — swap for a real BMS Web desktop capture once available.
+const PLACEHOLDER_IMG = "/images/freedom/dashboard_wide.webp";
 
 const DesktopShowcase = () => {
   const { t } = useLanguage();
