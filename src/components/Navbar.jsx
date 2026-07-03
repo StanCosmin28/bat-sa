@@ -1,14 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Globe, ChevronRight } from 'lucide-react';
+import { Menu, X, Globe, ChevronRight, ChevronDown, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
+
+const LANG_LABELS = { EN: 'English', FR: 'Français', RO: 'Română' };
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { lang, setLang, t } = useLanguage();
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
+  const langMenuRef = useRef(null);
+  const { lang, setLang, t, supportedLangs } = useLanguage();
   const location = useLocation();
+
+  // Close the desktop language dropdown on outside click
+  useEffect(() => {
+    if (!langMenuOpen) return;
+    const handleClickOutside = (e) => {
+      if (langMenuRef.current && !langMenuRef.current.contains(e.target)) {
+        setLangMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [langMenuOpen]);
 
   // Check if current route starts with a light (white) hero
   // Home and Products have white heroes, other pages have dark navy heroes
@@ -43,7 +59,16 @@ const Navbar = () => {
 
   // Determine text colors based on scroll and hero type
   const isDarkText = scrolled || isLightHeroPage;
-  
+
+  // The hamburger button sits on the header, but once the mobile menu is
+  // open, the dark bat-navy/95 overlay shows through wherever the header
+  // itself is transparent (unscrolled) — so while open, the button should
+  // follow `scrolled` alone, not `isDarkText`. Otherwise on an unscrolled
+  // light-hero page (e.g. Home) the icon stayed dark-on-white-bg while the
+  // actual backdrop behind it had become the dark overlay, making it
+  // invisible (white-on-white in the other direction).
+  const isMenuButtonDark = isOpen ? scrolled : isDarkText;
+
   const headerClass = `fixed w-full top-0 z-[100] transition-all duration-500 ${
     scrolled
       ? 'bg-white/95 backdrop-blur-xl border-b border-gray-100 py-4 shadow-sm'
@@ -91,27 +116,58 @@ const Navbar = () => {
 
           {/* Language Switcher & Mobile Toggle */}
           <div className="flex items-center gap-4 relative z-50">
-            <button 
-              onClick={() => {
-                const nextLang = lang === 'EN' ? 'FR' : lang === 'FR' ? 'RO' : 'EN';
-                setLang(nextLang);
-              }}
-              className={`hidden md:flex ${buttonClass}`}
-            >
-              <Globe size={14} />
-              <span>{lang}</span>
-            </button>
+            {/* Desktop language dropdown — picks a language directly instead
+                of cycling through them one click at a time, so adding more
+                languages later doesn't make switching slower. */}
+            <div ref={langMenuRef} className="hidden md:block relative">
+              <button
+                onClick={() => setLangMenuOpen((v) => !v)}
+                className={buttonClass}
+              >
+                <Globe size={14} />
+                <span>{lang}</span>
+                <ChevronDown size={14} className={`transition-transform duration-200 ${langMenuOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              <AnimatePresence>
+                {langMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 mt-2 w-40 rounded-xl border border-gray-100 bg-white shadow-xl overflow-hidden py-1.5"
+                  >
+                    {supportedLangs.map((code) => (
+                      <button
+                        key={code}
+                        onClick={() => {
+                          setLang(code);
+                          setLangMenuOpen(false);
+                        }}
+                        className={`w-full flex items-center justify-between gap-3 px-4 py-2.5 text-sm font-semibold transition-colors ${
+                          lang === code ? 'text-bat-blue bg-bat-blue/5' : 'text-bat-navy hover:bg-gray-50'
+                        }`}
+                      >
+                        {LANG_LABELS[code] ?? code}
+                        {lang === code && <Check size={14} />}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             <button
               className={`md:hidden flex items-center justify-center w-10 h-10 rounded-full backdrop-blur-md border ${
-                isDarkText && !isOpen ? 'bg-gray-100 border-gray-200' : 'bg-white/10 border-white/20'
+                isMenuButtonDark ? 'bg-gray-100 border-gray-200' : 'bg-white/10 border-white/20'
               }`}
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? (
-                <X size={20} className={isDarkText && !isOpen ? 'text-bat-navy' : 'text-white'} />
+                <X size={20} className={isMenuButtonDark ? 'text-bat-navy' : 'text-white'} />
               ) : (
-                <Menu size={20} className={isDarkText ? 'text-bat-navy' : 'text-white'} />
+                <Menu size={20} className={isMenuButtonDark ? 'text-bat-navy' : 'text-white'} />
               )}
             </button>
           </div>
@@ -126,9 +182,9 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed inset-0 z-40 bg-bat-navy/95 backdrop-blur-3xl flex flex-col justify-center px-6 pt-20 pb-10"
+            className="fixed inset-0 z-40 bg-bat-navy/95 backdrop-blur-3xl flex flex-col overflow-y-auto px-6 pt-24 pb-10"
           >
-            <div className="flex flex-col gap-6 h-full justify-center">
+            <div className="flex flex-col gap-6 my-auto">
               {navLinks.map((link, i) => {
                 const isActive = location.pathname === link.path || (link.path === '/products' && location.pathname.startsWith('/products/'));
                 return (
@@ -151,23 +207,32 @@ const Navbar = () => {
                 );
               })}
               
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="mt-auto pt-8 border-t border-white/10"
+                className="pt-8 border-t border-white/10"
               >
-                <button 
-                  onClick={() => {
-                    const nextLang = lang === 'EN' ? 'FR' : lang === 'FR' ? 'RO' : 'EN';
-                    setLang(nextLang);
-                    setIsOpen(false);
-                  }}
-                  className="flex items-center gap-2 mt-4 px-4 py-3 rounded-xl bg-gray-100 text-gray-800 font-bold w-full"
-                >
-                  <Globe size={18} />
-                  <span>Switch Language ({lang === 'EN' ? 'FR' : lang === 'FR' ? 'RO' : 'EN'})</span>
-                </button>
+                <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/40 mb-3">
+                  <Globe size={14} /> Language
+                </span>
+                <div className="flex gap-2">
+                  {supportedLangs.map((code) => (
+                    <button
+                      key={code}
+                      onClick={() => {
+                        setLang(code);
+                        setIsOpen(false);
+                      }}
+                      className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl font-bold text-sm transition-colors ${
+                        lang === code ? 'bg-white text-bat-navy' : 'bg-white/10 text-white/70 hover:bg-white/15'
+                      }`}
+                    >
+                      {code}
+                      {lang === code && <Check size={14} />}
+                    </button>
+                  ))}
+                </div>
               </motion.div>
             </div>
           </motion.div>
