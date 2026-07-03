@@ -13,7 +13,9 @@ const Spline = lazy(() => import("@splinetool/react-spline"));
 // keeps the live, interactive Spline canvas.
 function useIsDesktop() {
   const [isDesktop, setIsDesktop] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(min-width: 768px)").matches,
   );
 
   useEffect(() => {
@@ -120,15 +122,21 @@ const HeroV2 = () => {
   useEffect(() => {
     const el = sectionRef.current;
     if (!el || typeof IntersectionObserver === "undefined") return;
-    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
-      threshold: 0,
-    });
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      {
+        threshold: 0,
+      },
+    );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative h-screen min-h-[700px] w-full overflow-hidden bg-[#fafcff]">
+    <section
+      ref={sectionRef}
+      className="relative h-screen min-h-[700px] w-full overflow-hidden bg-[#fafcff]"
+    >
       {/* ── Layer 1: Ambient Glows ── */}
       <div className="absolute top-0 right-0 w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] bg-bat-blue/10 rounded-full blur-[120px] pointer-events-none z-0 translate-x-1/4 -translate-y-1/4" />
       <div className="absolute bottom-0 left-0 w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-bat-gold/10 rounded-full blur-[120px] pointer-events-none z-0 -translate-x-1/4 translate-y-1/4" />
@@ -153,15 +161,20 @@ const HeroV2 = () => {
       {/* ── Layer 4: Content overlaid on top ── */}
       <div className="container mx-auto px-6 lg:px-16 relative z-30 h-full flex flex-col justify-end pb-12 md:pb-20 pointer-events-none">
         <div className="w-full max-w-4xl pointer-events-none">
-          <AnimatedSection staggerChildren delay={0.15} staggerDelay={0.25} itemDuration={1}>
+          <AnimatedSection
+            staggerChildren
+            delay={0.15}
+            staggerDelay={0.25}
+            itemDuration={1}
+          >
             {/* Kicker */}
-            <div className="inline-flex items-center gap-2 mb-4 md:mb-6 px-4 py-1.5 md:px-5 md:py-2 rounded-full border border-bat-blue/20 bg-white/70 text-bat-blue text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase backdrop-blur-md shadow-sm pointer-events-auto">
+            {/* <div className="inline-flex items-center gap-2 mb-4 md:mb-6 px-4 py-1.5 md:px-5 md:py-2 rounded-full border border-bat-blue/20 bg-white/70 text-bat-blue text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase backdrop-blur-md shadow-sm pointer-events-auto">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-bat-blue opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-bat-blue"></span>
               </span>
               {t("home.heroKicker")}
-            </div>
+            </div> */}
 
             {/* Massive Overlaid Title - Adjusted for mobile */}
             <h1 className="text-[2.5rem] leading-[1.1] sm:text-5xl md:text-7xl lg:text-[5.5rem] font-black md:leading-[1.05] tracking-tight text-bat-navy pointer-events-auto">
