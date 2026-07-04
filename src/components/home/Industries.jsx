@@ -22,7 +22,7 @@ const Industries = () => {
             { id: "offices", icon: Building2, label: t("industry.offices"), desc: t("industry.officesDesc") },
             { id: "residential", icon: Briefcase, label: t("industry.residential"), desc: t("industry.residentialDesc") },
           ].map(({ id, icon: Icon, label, desc }) => (
-            <div key={id} className="card p-8 text-center group hover:-translate-y-1 transition-transform duration-300">
+            <div key={id} className="card h-full flex flex-col p-8 text-center group hover:-translate-y-1 transition-transform duration-300">
               <div className="w-12 h-12 rounded-xl bg-bat-blue/10 text-bat-blue flex items-center justify-center mx-auto mb-5 group-hover:bg-bat-blue group-hover:text-white transition-colors duration-300">
                 <Icon size={24} />
               </div>
