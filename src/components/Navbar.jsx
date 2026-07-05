@@ -69,10 +69,10 @@ const Navbar = () => {
   // invisible (white-on-white in the other direction).
   const isMenuButtonDark = isOpen ? scrolled : isDarkText;
 
-  const headerClass = `fixed w-full top-0 z-[100] transition-all duration-500 ${
+  const headerClass = `fixed w-full top-0 z-[100] border-b transition-all duration-300 ease-out ${
     scrolled
-      ? 'bg-white/95 backdrop-blur-xl border-b border-gray-100 py-4 shadow-sm'
-      : 'bg-transparent py-6'
+      ? 'bg-white/95 backdrop-blur-xl border-gray-100 py-4 shadow-sm'
+      : 'bg-transparent border-transparent py-6'
   }`;
 
   const textClass = isDarkText ? 'text-bat-navy' : 'text-white';
