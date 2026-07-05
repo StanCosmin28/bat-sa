@@ -1,4 +1,4 @@
-import { Fingerprint, BellRing, LayoutGrid, Gauge } from "lucide-react";
+import { Car, BellRing, SlidersHorizontal, Gauge } from "lucide-react";
 import AnimatedSection from "../AnimatedSection";
 import PhoneMockup from "../PhoneMockup";
 import { useLanguage } from "../../context/LanguageContext";
@@ -13,8 +13,8 @@ const IosShowcase = () => {
 
   const features = [
     {
-      id: "faceid",
-      icon: Fingerprint,
+      id: "carplay",
+      icon: Car,
       title: t("home.iosFeature1"),
       desc: t("home.iosFeature1Desc"),
     },
@@ -25,8 +25,8 @@ const IosShowcase = () => {
       desc: t("home.iosFeature2Desc"),
     },
     {
-      id: "widgets",
-      icon: LayoutGrid,
+      id: "control",
+      icon: SlidersHorizontal,
       title: t("home.iosFeature3"),
       desc: t("home.iosFeature3Desc"),
     },
@@ -63,7 +63,7 @@ const IosShowcase = () => {
             <div className="relative flex items-center justify-center h-[380px] sm:h-[470px] md:h-[560px] lg:h-auto lg:py-8">
               <div className="absolute w-[420px] h-[420px] bg-bat-blue/[0.06] rounded-full blur-[100px] pointer-events-none" />
 
-              <div className="relative flex items-end group scale-[0.7] sm:scale-75 md:scale-90 lg:scale-100 origin-center">
+              <div className="relative flex items-end group scale-[0.6] sm:scale-75 md:scale-90 lg:scale-100 origin-center">
                 <div className="relative z-10 -mr-16 md:-mr-20 rotate-[-6deg] scale-[0.85] transition-transform duration-500 group-hover:-translate-x-2 group-hover:rotate-[-9deg]">
                   <PhoneMockup
                     variant="iphone"

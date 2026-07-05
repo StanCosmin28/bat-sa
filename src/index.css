@@ -37,7 +37,7 @@
     background-size: 56px 56px;
   }
   .bg-dot-pattern {
-    background-image: radial-gradient(circle, rgba(59,130,246,0.12) 1px, transparent 1px);
+    background-image: radial-gradient(circle, rgba(2,79,137,0.12) 1px, transparent 1px);
     background-size: 28px 28px;
   }
   .bg-noise {
@@ -91,7 +91,7 @@
     width: 6px;
     height: 6px;
     border-radius: 9999px;
-    background-color: #3b82f6;
+    background-color: #024f89;
   }
   .product-prose strong {
     color: #1a2744;

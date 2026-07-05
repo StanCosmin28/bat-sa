@@ -47,7 +47,7 @@ const Contact = () => {
           <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black text-bat-navy tracking-tight leading-[1.02] mb-6">
             {t("contact.title")}
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-bat-blue to-blue-400">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-bat-blue to-bat-blue">
               {t("contact.titleAccent")}
             </span>
           </h1>
@@ -148,7 +148,7 @@ const Contact = () => {
           <div className="relative overflow-hidden bg-bat-navy rounded-3xl px-8 py-12 lg:px-16 lg:py-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             {/* Decorative blobs */}
             <div className="absolute -top-10 -right-10 w-48 h-48 bg-bat-blue/20 rounded-full blur-3xl pointer-events-none"></div>
-            <div className="absolute bottom-0 left-20 w-32 h-32 bg-blue-400/10 rounded-full blur-2xl pointer-events-none"></div>
+            <div className="absolute bottom-0 left-20 w-32 h-32 bg-bat-blue/10 rounded-full blur-2xl pointer-events-none"></div>
 
             <div className="relative z-10">
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-bat-blue/80 mb-2">

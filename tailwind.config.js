@@ -14,7 +14,7 @@ export default {
           tealLight: '#185296',
           gold: '#f59e0b',
           goldLight: '#fbbf24',
-          blue: '#3b82f6',
+          blue: '#024f89',
         }
       },
       fontFamily: {

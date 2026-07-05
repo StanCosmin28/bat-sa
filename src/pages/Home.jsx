@@ -10,7 +10,9 @@ import Pillars from "../components/home/Pillars";
 const Industries = lazy(() => import("../components/home/Industries"));
 const IosShowcase = lazy(() => import("../components/home/IosShowcase"));
 const Ecosystem = lazy(() => import("../components/home/Ecosystem"));
-const AndroidShowcase = lazy(() => import("../components/home/AndroidShowcase"));
+const AndroidShowcase = lazy(
+  () => import("../components/home/AndroidShowcase"),
+);
 const FreedomTeaser = lazy(() => import("../components/home/FreedomTeaser"));
 const ContactCta = lazy(() => import("../components/home/ContactCta"));
 
@@ -45,9 +47,9 @@ const Home = () => {
       <Suspense fallback={null}>
         <IosShowcase />
       </Suspense>
-      <Suspense fallback={null}>
+      {/* <Suspense fallback={null}>
         <Ecosystem />
-      </Suspense>
+      </Suspense> */}
       <Suspense fallback={null}>
         <AndroidShowcase />
       </Suspense>

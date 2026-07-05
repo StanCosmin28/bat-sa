@@ -2,9 +2,11 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import en from '../locales/en.json';
 import fr from '../locales/fr.json';
 import ro from '../locales/ro.json';
+import it from '../locales/it.json';
+import de from '../locales/de.json';
 
-const LOCALES = { EN: en, FR: fr, RO: ro };
-const SUPPORTED_LANGS = ['EN', 'FR', 'RO'];
+const LOCALES = { EN: en, FR: fr, RO: ro, IT: it, DE: de };
+const SUPPORTED_LANGS = ['EN', 'FR', 'RO', 'IT', 'DE'];
 const STORAGE_KEY = 'bat-lang';
 
 // Read from localStorage synchronously during initialization to avoid flash on refresh

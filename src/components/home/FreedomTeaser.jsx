@@ -6,6 +6,12 @@ import { useLanguage } from "../../context/LanguageContext";
 const FreedomTeaser = () => {
   const { t } = useLanguage();
 
+  const highlights = [
+    t("freedom.feat1"),
+    t("freedom.feat2"),
+    t("freedom.feat6"),
+  ];
+
   return (
     <section className="py-32 md:py-40 bg-bat-navy border-t border-white/5">
       <div className="container mx-auto px-6 lg:px-16">
@@ -22,7 +28,7 @@ const FreedomTeaser = () => {
           <AnimatedSection delay={0.15} className="order-2 lg:order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2 w-full">
             <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
               <img
-                src="/images/home/home_app_5_en.webp"
+                src="/images/freedom/nestor_module_config_crop.webp"
                 alt="FreeDOM Software"
                 className="w-full h-auto"
               />
@@ -30,9 +36,20 @@ const FreedomTeaser = () => {
           </AnimatedSection>
 
           <AnimatedSection className="order-3 lg:order-3 lg:col-start-1 lg:row-start-2 w-full">
-            <p className="text-white/60 text-lg leading-relaxed mb-10 font-light">
+            <p className="text-white/60 text-lg leading-relaxed mb-6 font-light">
               {t("home.teaserBody")}
             </p>
+            <div className="flex flex-wrap gap-x-6 gap-y-2 mb-10">
+              {highlights.map((label) => (
+                <span
+                  key={label}
+                  className="flex items-center gap-2 text-white/70 text-sm font-medium"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-bat-gold" />
+                  {label}
+                </span>
+              ))}
+            </div>
             <Link
               to="/freedom"
               className="inline-flex items-center gap-2 bg-white text-bat-navy hover:bg-bat-gold hover:text-bat-navy font-bold py-4 px-8 rounded-full transition-all"

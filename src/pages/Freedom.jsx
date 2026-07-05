@@ -1,6 +1,5 @@
-import { Activity, LayoutDashboard, Settings2, Smartphone, Shield, Zap, Check } from 'lucide-react';
+import { Activity, LayoutDashboard, Settings2, Smartphone, Shield, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import PhoneMockup from '../components/PhoneMockup';
 import AnimatedSection from '../components/AnimatedSection';
 import DesktopShowcase from '../components/freedom/DesktopShowcase';
 import ContactCta from '../components/home/ContactCta';
@@ -70,6 +69,31 @@ const Freedom = () => {
         </div>
       </div>
 
+      {/* What is FreeDOM */}
+      <section className="pb-32 lg:pb-40">
+        <div className="container mx-auto px-6 lg:px-12">
+          <div className="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-20">
+            <AnimatedSection delay={0.1} className="w-full lg:w-1/2">
+              <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+                <img
+                  src="/images/freedom/nestor_module_config_crop.webp"
+                  alt="FreeDOM module configuration screen"
+                  className="w-full h-auto"
+                />
+              </div>
+            </AnimatedSection>
+            <AnimatedSection className="w-full lg:w-1/2">
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-6 tracking-tight">
+                {t('freedom.whatTitle')}
+              </h2>
+              <p className="text-lg text-gray-400 font-light leading-relaxed">
+                {t('freedom.whatBody')}
+              </p>
+            </AnimatedSection>
+          </div>
+        </div>
+      </section>
+
       {/* Features Grid */}
       <section id="features" className="py-32 bg-white relative rounded-t-[3rem]">
         <div className="container mx-auto px-6 lg:px-12">
@@ -94,58 +118,82 @@ const Freedom = () => {
         </div>
       </section>
 
-      <DesktopShowcase />
-
-      {/* BMS Web — removed, PhoneMockup screens were blank/broken here, revisit later
-      <section className="py-32 bg-[#f8fafc] border-t border-gray-100">
-        <div className="container mx-auto px-6 lg:px-12">
-          <div className="flex flex-col-reverse lg:flex-row items-center gap-20">
-            <AnimatedSection delay={0.2} className="w-full lg:w-1/2">
-              <div className="flex gap-4 sm:gap-6 relative justify-center items-center transform scale-75 sm:scale-75 lg:scale-90 xl:scale-100 origin-center">
-                <div className="absolute inset-0 bg-bat-blue/10 rounded-full blur-[100px]" />
-                <div className="hover:-translate-y-4 transition-transform duration-500">
-                  <PhoneMockup
-                    imgSrc="/images/home/home_app_2_en.webp"
-                    altText="Mobile App"
-                  />
-                </div>
-                <div className="mt-24 hover:-translate-y-4 transition-transform duration-500">
-                  <PhoneMockup
-                    imgSrc="/images/home/home_app_3_en.webp"
-                    altText="Temperature App"
-                    delay={0.2}
-                  />
-                </div>
-              </div>
-            </AnimatedSection>
-
+      {/* Real-time supervision proof */}
+      <section className="py-32 bg-white border-t border-gray-100">
+        <div className="container mx-auto px-6 lg:px-16">
+          <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-20">
             <AnimatedSection className="w-full lg:w-1/2">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-bat-navy/5 text-bat-navy font-bold text-sm mb-6 uppercase tracking-wider">
-                <Smartphone size={16} /> {t('freedom.responsiveTitle')}
-              </div>
-              <h2 className="text-4xl md:text-5xl font-black text-bat-navy mb-8 tracking-tight">{t('freedom.accessTitle')}</h2>
-              <p className="text-gray-500 text-xl leading-relaxed mb-10 font-light">
-                {t('freedom.accessBody')}
+              <span className="kicker">{t('freedom.supervisionKicker')}</span>
+              <h2 className="section-title mb-6">{t('freedom.supervisionTitle')}</h2>
+              <p className="text-gray-500 text-lg leading-relaxed font-light">
+                {t('freedom.supervisionBody')}
               </p>
-              <ul className="space-y-6">
-                {[
-                  t('freedom.accessBullet1'),
-                  t('freedom.accessBullet2'),
-                  t('freedom.accessBullet3'),
-                ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-4 text-gray-700 font-medium text-lg">
-                    <div className="w-8 h-8 rounded-full bg-bat-blue/10 flex items-center justify-center text-bat-blue shrink-0">
-                      <Check size={16} />
-                    </div>
-                    {item}
-                  </li>
-                ))}
-              </ul>
+            </AnimatedSection>
+            <AnimatedSection delay={0.15} className="w-full lg:w-1/2">
+              <div className="relative rounded-2xl overflow-hidden border border-gray-100 shadow-xl">
+                <img
+                  src="/images/freedom/nestor_meter_supervision.webp"
+                  alt="Live meter supervision tree"
+                  className="w-full h-auto"
+                />
+              </div>
             </AnimatedSection>
           </div>
         </div>
       </section>
-      */}
+
+      {/* Wiring Diagrams */}
+      <section className="py-32 bg-[#f8fafc] border-t border-gray-100">
+        <div className="container mx-auto px-6 lg:px-12">
+          <AnimatedSection className="text-center mb-16 max-w-3xl mx-auto">
+            <span className="kicker">{t('freedom.wiringKicker')}</span>
+            <h2 className="section-title mb-6">{t('freedom.wiringTitle')}</h2>
+            <p className="text-gray-500 text-lg leading-relaxed font-light">
+              {t('freedom.wiringSubtitle')}
+            </p>
+          </AnimatedSection>
+
+          <AnimatedSection staggerChildren className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {[
+              { img: '/images/freedom/wiring_relay_dispatcher.webp', caption: t('freedom.wiringExample1') },
+              { img: '/images/freedom/wiring_dimmer_wallmount.webp', caption: t('freedom.wiringExample2') },
+            ].map(({ img, caption }) => (
+              <div key={img} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                <img src={img} alt={caption} className="w-full h-auto" />
+                <p className="text-center text-sm font-medium text-bat-navy py-4 border-t border-gray-100">
+                  {caption}
+                </p>
+              </div>
+            ))}
+          </AnimatedSection>
+        </div>
+      </section>
+
+      <DesktopShowcase />
+
+      {/* Munn — companion app. Placeholder visual until final Munn screenshots are supplied. */}
+      <section className="py-32 bg-[#f8fafc] border-t border-gray-100">
+        <div className="container mx-auto px-6 lg:px-16">
+          <div className="flex flex-col-reverse lg:flex-row items-center gap-16 lg:gap-20">
+            <AnimatedSection delay={0.1} className="w-full lg:w-1/2">
+              <div className="relative rounded-2xl overflow-hidden border border-gray-100 shadow-xl">
+                <img
+                  src="/images/home/home_app_4_en.webp"
+                  alt="Munn app overview"
+                  className="w-full h-auto"
+                />
+              </div>
+            </AnimatedSection>
+            <AnimatedSection className="w-full lg:w-1/2">
+              <span className="kicker">{t('freedom.munnKicker')}</span>
+              <h2 className="section-title mb-6">{t('freedom.munnTitle')}</h2>
+              <p className="text-gray-500 text-lg leading-relaxed font-light">
+                {t('freedom.munnBody')}
+              </p>
+            </AnimatedSection>
+          </div>
+        </div>
+      </section>
 
       <ContactCta />
     </div>

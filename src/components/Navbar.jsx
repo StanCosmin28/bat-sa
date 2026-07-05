@@ -4,7 +4,7 @@ import { Menu, X, Globe, ChevronRight, ChevronDown, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 
-const LANG_LABELS = { EN: 'English', FR: 'Français', RO: 'Română' };
+const LANG_LABELS = { EN: 'English', FR: 'Français', RO: 'Română', IT: 'Italiano', DE: 'Deutsch' };
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);

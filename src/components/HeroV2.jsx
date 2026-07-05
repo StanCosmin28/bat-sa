@@ -181,7 +181,7 @@ const HeroV2 = () => {
               {t("home.heroTitle")}
               <br />
               <span className="relative inline-block mt-1 md:mt-2">
-                <span className="relative bg-gradient-to-br from-bat-blue via-blue-600 to-bat-navy bg-clip-text text-transparent">
+                <span className="relative bg-gradient-to-br from-bat-blue via-bat-blue to-bat-navy bg-clip-text text-transparent">
                   {t("home.heroTitleHighlight")}
                 </span>
               </span>

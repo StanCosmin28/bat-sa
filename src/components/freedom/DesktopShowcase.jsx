@@ -1,10 +1,8 @@
 import { LayoutGrid, MapPinned, FileBarChart, MousePointerClick } from "lucide-react";
 import AnimatedSection from "../AnimatedSection";
-import LaptopMockup from "../LaptopMockup";
 import { useLanguage } from "../../context/LanguageContext";
 
-// Cropped from the existing template screenshot set (screen content only, no
-// device bezel baked in) — swap for a real BMS Web desktop capture once available.
+// Real capture of our building SCADA panel (plan view with positioned devices).
 const PLACEHOLDER_IMG = "/images/freedom/dashboard_wide.webp";
 
 const DesktopShowcase = () => {
@@ -45,10 +43,12 @@ const DesktopShowcase = () => {
           </AnimatedSection>
 
           <AnimatedSection delay={0.15} className="w-full lg:w-1/2 order-1 lg:order-2">
-            <div className="relative group [perspective:1200px]">
-              <div className="transition-transform duration-500 group-hover:[transform:rotateX(2deg)_rotateY(-2deg)_scale(1.02)]">
-                <LaptopMockup imgSrc={PLACEHOLDER_IMG} altText="FreeDOM BMS Web on desktop" />
-              </div>
+            <div className="relative rounded-2xl overflow-hidden border border-gray-100 shadow-xl">
+              <img
+                src={PLACEHOLDER_IMG}
+                alt="Building SCADA control panel"
+                className="w-full h-auto"
+              />
             </div>
           </AnimatedSection>
 

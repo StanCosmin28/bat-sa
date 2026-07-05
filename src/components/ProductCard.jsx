@@ -48,7 +48,7 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* The animated bottom border bar */}
-      <div className="absolute bottom-0 left-0 w-full h-[3px] sm:h-1 bg-gradient-to-r from-bat-blue to-blue-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+      <div className="absolute bottom-0 left-0 w-full h-[3px] sm:h-1 bg-gradient-to-r from-bat-blue to-bat-blue transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
     </Link>
   );
 };
