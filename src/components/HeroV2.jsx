@@ -2,6 +2,7 @@ import React, { Suspense, lazy, useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
+import { useLoading } from "../context/LoadingContext";
 import AnimatedSection from "./AnimatedSection";
 
 // Lazy load Spline to prevent it from blocking the initial render
@@ -38,7 +39,7 @@ function useIsDesktop() {
 // while scrolled far out of view — `app.stop()/play()` (exposed via onLoad)
 // pauses that loop without unmounting the canvas, so there's no reload/flash
 // when the user scrolls back up.
-function SplineScene({ scene, className, active }) {
+function SplineScene({ scene, className, active, onReady }) {
   const [ready, setReady] = useState(false);
   const appRef = useRef(null);
 
@@ -60,6 +61,7 @@ function SplineScene({ scene, className, active }) {
             appRef.current = app;
             if (!active) app.stop();
             setReady(true);
+            onReady?.();
           }}
         />
       </div>
@@ -76,12 +78,17 @@ const LOOP_RESTART_SECONDS = 4;
 // No poster — a still frame that then "jumps" into motion once the video
 // buffers reads as broken. Stay on the plain background (Layer 1's glows)
 // and fade the video in only once it can actually play.
-function MobileHeroVideo({ active }) {
+function MobileHeroVideo({ active, onReady }) {
   const [ready, setReady] = useState(false);
   const videoRef = useRef(null);
 
   // Same idea as the desktop Spline canvas: pause decoding once the hero
   // scrolls out of view instead of leaving it playing off-screen forever.
+  // `autoPlay` + immediate pause (via this effect, since `active` starts
+  // false while the splash is up) is what forces mobile Safari to actually
+  // buffer the file ahead of time — dropping `autoPlay` entirely makes it
+  // defer fetching until a real `play()` call, which is the one thing we're
+  // trying to avoid.
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -96,7 +103,11 @@ function MobileHeroVideo({ active }) {
       autoPlay
       muted
       playsInline
-      onCanPlay={() => setReady(true)}
+      preload="auto"
+      onCanPlay={() => {
+        setReady(true);
+        onReady?.();
+      }}
       onEnded={() => {
         const video = videoRef.current;
         if (!video) return;
@@ -112,12 +123,19 @@ function MobileHeroVideo({ active }) {
 
 const HeroV2 = () => {
   const { t } = useLanguage();
+  const { revealed, markHeroReady } = useLoading();
   const isDesktop = useIsDesktop();
   const sectionRef = useRef(null);
   // Starts true (hero is what's on screen on first paint); IntersectionObserver
   // flips it once the user scrolls the hero out of the viewport, so the
   // Spline canvas / mobile video can stop doing work while it's not visible.
   const [inView, setInView] = useState(true);
+  // Both the Spline scene and the mobile video keep loading/buffering while
+  // the splash screen is up (see SplineScene/MobileHeroVideo's `onReady`,
+  // which is what lets the splash close in the first place) — they just
+  // stay paused on their first frame until the splash gate actually opens,
+  // so the robot/video only starts moving once the user can see it.
+  const active = inView && revealed;
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -147,10 +165,11 @@ const HeroV2 = () => {
           <SplineScene
             scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
             className="w-full h-full object-cover"
-            active={inView}
+            active={active}
+            onReady={markHeroReady}
           />
         ) : (
-          <MobileHeroVideo active={inView} />
+          <MobileHeroVideo active={active} onReady={markHeroReady} />
         )}
       </div>
 

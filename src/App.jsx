@@ -8,8 +8,10 @@ import {
 import { Loader2 } from "lucide-react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import AppLoader from "./components/AppLoader";
 import Home from "./pages/Home";
 import { LanguageProvider } from "./context/LanguageContext";
+import { LoadingProvider } from "./context/LoadingContext";
 
 // Home loads eagerly (it's the most common entry point, bundled with the
 // main chunk). Every other page is fetched on demand — visiting "/" should
@@ -84,8 +86,11 @@ function App() {
   return (
     <LanguageProvider>
       <Router>
-        <ScrollToTop />
-        <AppLayout />
+        <LoadingProvider>
+          <ScrollToTop />
+          <AppLayout />
+          <AppLoader />
+        </LoadingProvider>
       </Router>
     </LanguageProvider>
   );

@@ -6,10 +6,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://prod.spline.design" />
     <link rel="dns-prefetch" href="https://prod.spline.design" />
+    <link rel="preload" href="/logo-bat-white.svg" as="image" />
     <title>bat-sa</title>
+    <!--
+      Plain HTML/CSS splash, painted before any JS downloads/parses/runs —
+      on a slow connection the React bundle itself can take seconds to
+      arrive, and without this the user stares at a blank white tab that
+      whole time. AppLoader.jsx removes this node the instant it mounts
+      (useLayoutEffect, same frame, before paint) and takes over with the
+      identical navy+logo look, so the handoff is invisible; from then on
+      the animated one owns the "gate opening" reveal.
+    -->
+    <style>
+      #static-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #1a2744;
+      }
+      #static-loader img {
+        width: 140px;
+        height: auto;
+        animation: static-loader-pulse 1.6s ease-in-out infinite;
+      }
+      @keyframes static-loader-pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.045);
+        }
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
+    <div id="static-loader">
+      <img src="/logo-bat-white.svg" alt="" />
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
