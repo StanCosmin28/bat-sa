@@ -3,9 +3,7 @@ import AnimatedSection from "../AnimatedSection";
 import PhoneMockup from "../PhoneMockup";
 import { useLanguage } from "../../context/LanguageContext";
 
-// Placeholder screenshots reuse existing home imagery until real Android
-// screenshots are captured — swap `imgSrc` on both PhoneMockups below.
-// Icons are placeholders too — swap per feature whenever you're ready.
+// Real Munn app screenshots.
 const AndroidShowcase = () => {
   const { t } = useLanguage();
 
@@ -70,15 +68,17 @@ const AndroidShowcase = () => {
                 <div className="relative z-10 -mr-16 md:-mr-20 rotate-[-6deg] scale-[0.85] transition-transform duration-500 group-hover:-translate-x-2 group-hover:rotate-[-9deg]">
                   <PhoneMockup
                     variant="samsung"
-                    imgSrc="/images/home/home_app_5_en.webp"
-                    altText="BAT Android App — Devices"
+                    imgSrc="/images/home/android_munn_panel.svg"
+                    altText="BAT Android App — Menu"
+                    screenClassName="pt-1.5 sm:pt-2"
+                    screenBg="bg-[#6914d5]"
                   />
                 </div>
                 <div className="relative z-20 rotate-[4deg] transition-transform duration-500 group-hover:translate-x-2 group-hover:rotate-[6deg] group-hover:-translate-y-2">
                   <PhoneMockup
                     variant="samsung"
-                    imgSrc="/images/home/home_app_4_en.webp"
-                    altText="BAT Android App — Dashboard"
+                    imgSrc="/images/home/android_thermostat_munn.svg"
+                    altText="BAT Android App — Thermostat"
                   />
                 </div>
               </div>

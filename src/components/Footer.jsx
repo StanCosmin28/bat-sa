@@ -14,7 +14,7 @@ const Footer = () => {
           
           {/* Brand & CTA */}
           <div className="col-span-1 lg:col-span-5 flex flex-col items-start">
-            <span className="text-4xl md:text-5xl font-black text-white tracking-tighter block mb-6">B.A.T.</span>
+            <img src="/logo-bat-white.svg" alt="B.A.T." className="h-10 md:h-12 w-auto mb-6" />
             <p className="text-xl text-gray-400 font-light mb-8 max-w-md leading-relaxed">
               {t('footer.tagline')}
             </p>
@@ -72,8 +72,8 @@ const Footer = () => {
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs font-medium text-gray-500 gap-4">
           <p>&copy; {new Date().getFullYear()} {t('footer.rights')}</p>
           <div className="flex gap-8">
-            <Link to="#" className="hover:text-white transition-colors">{t('footer.privacy')}</Link>
-            <Link to="#" className="hover:text-white transition-colors">{t('footer.terms')}</Link>
+            <Link to="/privacy-policy" className="hover:text-white transition-colors">{t('footer.privacy')}</Link>
+            <Link to="/terms-of-service" className="hover:text-white transition-colors">{t('footer.terms')}</Link>
           </div>
         </div>
       </div>

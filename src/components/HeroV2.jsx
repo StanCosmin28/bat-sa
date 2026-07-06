@@ -177,7 +177,7 @@ const HeroV2 = () => {
             </div> */}
 
             {/* Massive Overlaid Title - Adjusted for mobile */}
-            <h1 className="text-[2.5rem] leading-[1.1] sm:text-5xl md:text-7xl lg:text-[5.5rem] font-black md:leading-[1.05] tracking-tight text-bat-navy pointer-events-auto">
+            <h1 className="font-hero text-[2.5rem] leading-[1.1] sm:text-5xl md:text-7xl lg:text-[5.5rem] font-black md:leading-[1.05] tracking-tight text-bat-navy pointer-events-auto">
               {t("home.heroTitle")}
               <br />
               <span className="relative inline-block mt-1 md:mt-2">

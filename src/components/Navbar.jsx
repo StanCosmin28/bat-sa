@@ -28,7 +28,7 @@ const Navbar = () => {
 
   // Check if current route starts with a light (white) hero
   // Home and Products have white heroes, other pages have dark navy heroes
-  const isLightHeroPage = location.pathname === '/' || location.pathname.startsWith('/products') || location.pathname === '/contact';
+  const isLightHeroPage = location.pathname === '/' || location.pathname.startsWith('/products') || location.pathname === '/contact' || location.pathname === '/privacy-policy' || location.pathname === '/terms-of-service';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -77,7 +77,6 @@ const Navbar = () => {
 
   const textClass = isDarkText ? 'text-bat-navy' : 'text-white';
   const textHoverClass = isDarkText ? 'hover:text-bat-blue' : 'hover:text-white/70';
-  const logoClass = `text-2xl font-black tracking-tighter transition-colors duration-300 ${textClass}`;
 
   const buttonClass = `flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-full border transition-all duration-300 ${
     isDarkText
@@ -90,8 +89,12 @@ const Navbar = () => {
       <header className={headerClass}>
         <div className="container mx-auto px-6 lg:px-12 flex justify-between items-center">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 relative z-50">
-            <span className={logoClass}>B.A.T.</span>
+          <Link to="/" className="flex items-center relative z-50">
+            <img
+              src={isDarkText ? "/logo-bat-navy.svg" : "/logo-bat-white.svg"}
+              alt="B.A.T."
+              className="h-8 md:h-9 w-auto"
+            />
           </Link>
 
           {/* Desktop Nav */}

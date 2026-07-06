@@ -3,10 +3,9 @@ import AnimatedSection from "../AnimatedSection";
 import PhoneMockup from "../PhoneMockup";
 import { useLanguage } from "../../context/LanguageContext";
 
-// Screens are placeholders (existing home_app_*.webp assets) until real
-// iOS app screenshots are supplied — swap the imgSrc values below then.
-const SCREEN_BACK = "/images/home/home_app_4_en.webp";
-const SCREEN_FRONT = "/images/home/home_app_2_en.webp";
+// Real Munn app screenshots.
+const SCREEN_BACK = "/images/home/ios_back_favorites.webp";
+const SCREEN_FRONT = "/images/home/ios_front_lights.webp";
 
 const IosShowcase = () => {
   const { t } = useLanguage();

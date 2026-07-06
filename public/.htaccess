@@ -1,0 +1,12 @@
+# Single-page app fallback: React Router handles routing client-side, so
+# any request that isn't an existing file or directory (e.g. /freedom,
+# /products/some-id, /privacy-policy) must be served index.html instead of
+# a 404, letting the app take over and render the right route.
+# Matches what's already configured on the Plesk server.
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+
+RewriteRule ^(.*) /index.html [NC,L]

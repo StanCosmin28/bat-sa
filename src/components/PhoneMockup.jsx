@@ -7,8 +7,11 @@ import { motion } from "framer-motion";
 // one-time, lossless re-export of the exact same art rotated 90deg into
 // portrait (same paths, wrapped in a single rotation transform + swapped
 // viewBox — nothing redrawn, resized, or added). Its screen is a real
-// transparent cutout, so the frame alone is the whole mockup.
+// transparent cutout, so the screenshot is layered underneath it (screen
+// rect below, from numerically sampling the SVG's own path coordinates —
+// see git history) and the frame renders on top, unchanged.
 const IPHONE_SVG = "/iphone_16_portrait.svg";
+const IPHONE_SCREEN = { left: "5.05%", top: "2.25%", width: "89.9%", height: "95.5%" };
 
 const VARIANTS = {
   iphone: {
@@ -28,6 +31,8 @@ const PhoneMockup = ({
   delay = 0,
   className = "",
   variant = "iphone",
+  screenClassName = "",
+  screenBg = "bg-gray-900",
 }) => {
   const v = VARIANTS[variant] ?? VARIANTS.iphone;
 
@@ -41,7 +46,17 @@ const PhoneMockup = ({
     >
       {variant === "iphone" ? (
         <div className={`relative filter drop-shadow-2xl ${v.frameClass}`}>
-          <img src={IPHONE_SVG} alt="" className="w-full h-full" />
+          <div
+            className="absolute overflow-hidden rounded-[2rem] sm:rounded-[2.4rem] bg-gray-900 p-0.5"
+            style={IPHONE_SCREEN}
+          >
+            <img
+              src={imgSrc}
+              alt={altText}
+              className="w-full h-full object-cover object-top rounded-[1.8rem] sm:rounded-[2.2rem]"
+            />
+          </div>
+          <img src={IPHONE_SVG} alt="" className="absolute inset-0 w-full h-full pointer-events-none" />
         </div>
       ) : (
         <div
@@ -52,14 +67,19 @@ const PhoneMockup = ({
           <div className="absolute -left-[2px] top-32 sm:top-40 w-[2px] h-10 sm:h-12 bg-black/80 rounded-l-sm" />
           <div className="absolute -right-[2px] top-28 sm:top-36 w-[2px] h-12 sm:h-16 bg-black/80 rounded-r-sm" />
 
-          {/* Screen — left empty for now, no screenshot content until real
-              app captures are supplied. */}
+          {/* Screen (the actual screenshot layer) */}
           <div
-            className={`relative w-full h-full overflow-hidden bg-gray-900 ${v.screenRadius}`}
-          />
+            className={`relative w-full h-full overflow-hidden p-0.5 ${screenBg} ${v.screenRadius} ${screenClassName}`}
+          >
+            <img
+              src={imgSrc}
+              alt={altText}
+              className="w-full h-full object-cover object-top rounded-[1.5rem] sm:rounded-[1.8rem]"
+            />
+          </div>
 
           {/* Notch / camera cutout, drawn on top of the screen */}
-          <div className="absolute top-3 sm:top-4 left-1/2 -translate-x-1/2 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-black rounded-full ring-4 ring-black/40 z-20 pointer-events-none" />
+          <div className="absolute top-6 sm:top-7 left-1/2 -translate-x-1/2 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-black rounded-full ring-4 ring-black/40 z-20 pointer-events-none" />
         </div>
       )}
     </motion.div>

@@ -19,6 +19,8 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
+        // Home hero headline only — see src/index.css @font-face.
+        hero: ['"Good Times"', 'sans-serif'],
       },
       animation: {
         blob: "blob 7s infinite",

@@ -19,6 +19,8 @@ const Products = lazy(() => import("./pages/Products"));
 const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 const Freedom = lazy(() => import("./pages/Freedom"));
 const Contact = lazy(() => import("./pages/Contact"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 // Temporary utility route for screen-recording the Spline animation — not
 // linked anywhere, safe to delete once the mobile video/GIF is captured.
@@ -67,6 +69,8 @@ function AppLayout() {
             <Route path="/products/:id" element={<ProductDetail />} />
             <Route path="/freedom" element={<Freedom />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

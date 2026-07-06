@@ -2,6 +2,7 @@ import { Activity, LayoutDashboard, Settings2, Smartphone, Shield, Zap } from 'l
 import { Link } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
 import DesktopShowcase from '../components/freedom/DesktopShowcase';
+import MunnScreenCarousel from '../components/freedom/MunnScreenCarousel';
 import ContactCta from '../components/home/ContactCta';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -171,27 +172,23 @@ const Freedom = () => {
 
       <DesktopShowcase />
 
-      {/* Munn — companion app. Placeholder visual until final Munn screenshots are supplied. */}
-      <section className="py-32 bg-[#f8fafc] border-t border-gray-100">
-        <div className="container mx-auto px-6 lg:px-16">
-          <div className="flex flex-col-reverse lg:flex-row items-center gap-16 lg:gap-20">
-            <AnimatedSection delay={0.1} className="w-full lg:w-1/2">
-              <div className="relative rounded-2xl overflow-hidden border border-gray-100 shadow-xl">
-                <img
-                  src="/images/home/home_app_4_en.webp"
-                  alt="Munn app overview"
-                  className="w-full h-auto"
-                />
-              </div>
-            </AnimatedSection>
-            <AnimatedSection className="w-full lg:w-1/2">
+      {/* Munn — companion app. Continues directly off DesktopShowcase (same
+          bg, no divider) since both are part of the same Munn story. */}
+      <section className="pt-0 pb-32 md:pb-40 bg-white">
+        <div className="container mx-auto px-6 lg:px-12">
+          <AnimatedSection className="text-center -mb-[12%]">
+            <div className="max-w-2xl mx-auto">
               <span className="kicker">{t('freedom.munnKicker')}</span>
-              <h2 className="section-title mb-6">{t('freedom.munnTitle')}</h2>
-              <p className="text-gray-500 text-lg leading-relaxed font-light">
+              <h2 className="section-title mb-4">{t('freedom.munnTitle')}</h2>
+              <p className="text-gray-500 text-base leading-relaxed font-light">
                 {t('freedom.munnBody')}
               </p>
-            </AnimatedSection>
-          </div>
+            </div>
+          </AnimatedSection>
+
+          <AnimatedSection delay={0.1}>
+            <MunnScreenCarousel />
+          </AnimatedSection>
         </div>
       </section>
 
