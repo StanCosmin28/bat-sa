@@ -24,6 +24,9 @@ const Contact = lazy(() => import("./pages/Contact"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+// Temporary utility route for screen-recording the Spline animation — not
+// linked anywhere, safe to delete once the mobile video/GIF is captured.
+const SplinePreview = lazy(() => import("./pages/SplinePreview"));
 
 const PageFallback = () => (
   <div className="min-h-[60vh] flex items-center justify-center">
@@ -43,6 +46,19 @@ const ScrollToTop = () => {
 };
 
 function AppLayout() {
+  const { pathname } = useLocation();
+  const isBarePreview = pathname === "/spline-preview";
+
+  if (isBarePreview) {
+    return (
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/spline-preview" element={<SplinePreview />} />
+        </Routes>
+      </Suspense>
+    );
+  }
+
   return (
     <div className="flex flex-col min-h-screen font-sans selection:bg-bat-blue selection:text-white bg-gray-50">
       <Navbar />

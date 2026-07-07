@@ -59,7 +59,14 @@ function SplineScene({ scene, className, active, onReady }) {
           className={className}
           onLoad={(app) => {
             appRef.current = app;
-            if (!active) app.stop();
+            // Deliberately NOT calling app.stop() here even when `active` is
+            // still false (splash not open yet) — stopping the engine before
+            // it has rendered a single real frame leaves it wedged: a later
+            // play() doesn't resume it, so the robot stays frozen forever on
+            // a fresh visit until something (e.g. a scroll) happens to fire
+            // the effect below a second time. It's hidden at opacity 0 here
+            // anyway, so letting it run underneath for that first moment is
+            // invisible and harmless.
             setReady(true);
             onReady?.();
           }}
@@ -73,7 +80,7 @@ function SplineScene({ scene, className, active, onReady }) {
 // first playthrough shows the full intro — every repeat afterwards feels
 // like a shorter, later-starting cycle instead of visibly resetting to the
 // same opening beat each time.
-const LOOP_RESTART_SECONDS = 4;
+const LOOP_RESTART_SECONDS = 1.5;
 
 // No poster — a still frame that then "jumps" into motion once the video
 // buffers reads as broken. Stay on the plain background (Layer 1's glows)
@@ -163,7 +170,7 @@ const HeroV2 = () => {
       <div className="absolute inset-0 z-10 w-full h-full">
         {isDesktop ? (
           <SplineScene
-            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+            scene="https://prod.spline.design/6gw7k4PgCQ2-XzVw/scene.splinecode"
             className="w-full h-full object-cover"
             active={active}
             onReady={markHeroReady}
