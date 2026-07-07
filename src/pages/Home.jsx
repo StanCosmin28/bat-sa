@@ -9,7 +9,6 @@ import Pillars from "../components/home/Pillars";
 // and Suspense resolves instantly instead of showing a fallback.
 const Industries = lazy(() => import("../components/home/Industries"));
 const IosShowcase = lazy(() => import("../components/home/IosShowcase"));
-const Ecosystem = lazy(() => import("../components/home/Ecosystem"));
 const Integrations = lazy(() => import("../components/home/Integrations"));
 const AndroidShowcase = lazy(
   () => import("../components/home/AndroidShowcase"),
@@ -20,7 +19,6 @@ const ContactCta = lazy(() => import("../components/home/ContactCta"));
 const belowFoldChunks = [
   () => import("../components/home/Industries"),
   () => import("../components/home/IosShowcase"),
-  () => import("../components/home/Ecosystem"),
   () => import("../components/home/Integrations"),
   () => import("../components/home/AndroidShowcase"),
   () => import("../components/home/FreedomTeaser"),
@@ -49,9 +47,6 @@ const Home = () => {
       <Suspense fallback={null}>
         <IosShowcase />
       </Suspense>
-      {/* <Suspense fallback={null}>
-        <Ecosystem />
-      </Suspense> */}
       <Suspense fallback={null}>
         <Integrations />
       </Suspense>

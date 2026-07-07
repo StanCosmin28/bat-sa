@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 
 const Footer = () => {
