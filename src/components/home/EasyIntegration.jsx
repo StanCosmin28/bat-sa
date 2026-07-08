@@ -210,13 +210,13 @@ const EasyIntegration = () => {
               }
             />
 
-            <div className="flex items-center gap-5 sm:gap-6 mt-10">
+            <div className="flex items-center justify-center gap-4 sm:gap-6 mt-10 w-full max-w-sm">
               <motion.button
                 onClick={() => setStep((s) => Math.max(0, s - 1))}
                 disabled={step === 0}
                 whileTap={step === 0 ? undefined : { scale: 0.92 }}
                 aria-label={t("home.easyPrev")}
-                className={`flex items-center justify-center w-12 h-12 rounded-full border transition-all duration-300 ${
+                className={`flex items-center justify-center w-12 h-12 shrink-0 rounded-full border transition-all duration-300 ${
                   step === 0
                     ? "border-gray-100 text-gray-300 cursor-default"
                     : "border-gray-200 text-bat-navy bg-white shadow-sm hover:border-bat-blue hover:text-bat-blue"
@@ -225,22 +225,38 @@ const EasyIntegration = () => {
                 <ChevronLeft size={20} />
               </motion.button>
 
-              <div className="flex flex-col items-center gap-2 min-w-[7rem]">
-                <div className="flex items-center gap-2">
-                  {active.steps.map((src, i) => (
-                    <button
-                      key={src}
-                      onClick={() => setStep(i)}
-                      aria-label={`${t("home.easyStep")} ${i + 1}`}
-                      className={`rounded-full transition-all duration-300 ${
-                        i === step
-                          ? "w-6 h-2 bg-bat-blue"
-                          : "w-2 h-2 bg-gray-200 hover:bg-gray-300"
-                      }`}
+              <div className="flex flex-col items-center gap-2 flex-1 min-w-0">
+                {/* Dots stop scaling past 8 steps — with the 13/18-step
+                    flows they'd push the prev/next buttons off-screen on
+                    mobile, so long sets get a fixed-width progress bar. */}
+                {active.steps.length <= 8 ? (
+                  <div className="flex items-center gap-2">
+                    {active.steps.map((src, i) => (
+                      <button
+                        key={src}
+                        onClick={() => setStep(i)}
+                        aria-label={`${t("home.easyStep")} ${i + 1}`}
+                        className={`rounded-full transition-all duration-300 ${
+                          i === step
+                            ? "w-6 h-2 bg-bat-blue"
+                            : "w-2 h-2 bg-gray-200 hover:bg-gray-300"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="w-full max-w-[9rem] h-1.5 rounded-full bg-gray-100 overflow-hidden">
+                    <motion.div
+                      className="h-full rounded-full bg-bat-blue"
+                      initial={false}
+                      animate={{
+                        width: `${((step + 1) / active.steps.length) * 100}%`,
+                      }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
                     />
-                  ))}
-                </div>
-                <span className="text-xs font-semibold tracking-wide text-gray-400">
+                  </div>
+                )}
+                <span className="text-xs font-semibold tracking-wide text-gray-400 whitespace-nowrap">
                   {t("home.easyStep")} {step + 1} / {active.steps.length}
                 </span>
               </div>
@@ -250,7 +266,7 @@ const EasyIntegration = () => {
                 disabled={step === lastStep}
                 whileTap={step === lastStep ? undefined : { scale: 0.92 }}
                 aria-label={t("home.easyNext")}
-                className={`flex items-center justify-center w-12 h-12 rounded-full border transition-all duration-300 ${
+                className={`flex items-center justify-center w-12 h-12 shrink-0 rounded-full border transition-all duration-300 ${
                   step === lastStep
                     ? "border-gray-100 text-gray-300 cursor-default"
                     : "border-gray-200 text-bat-navy bg-white shadow-sm hover:border-bat-blue hover:text-bat-blue"
