@@ -48,7 +48,7 @@ const Footer = () => {
             </div>
 
             <div>
-              <h4 className="text-white font-bold mb-6 tracking-wide text-sm uppercase opacity-70">{t('footer.legal')}</h4>
+              <h4 className="text-white font-bold mb-6 tracking-wide text-sm uppercase opacity-70">{t('footer.contact')}</h4>
               <ul className="space-y-5 text-sm">
                 <li className="flex items-start gap-3">
                   <MapPin size={18} className="text-bat-gold shrink-0 mt-0.5" />

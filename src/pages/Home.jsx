@@ -10,6 +10,7 @@ import Pillars from "../components/home/Pillars";
 const Industries = lazy(() => import("../components/home/Industries"));
 const IosShowcase = lazy(() => import("../components/home/IosShowcase"));
 const Integrations = lazy(() => import("../components/home/Integrations"));
+const EasyIntegration = lazy(() => import("../components/home/EasyIntegration"));
 const AndroidShowcase = lazy(
   () => import("../components/home/AndroidShowcase"),
 );
@@ -20,6 +21,7 @@ const belowFoldChunks = [
   () => import("../components/home/Industries"),
   () => import("../components/home/IosShowcase"),
   () => import("../components/home/Integrations"),
+  () => import("../components/home/EasyIntegration"),
   () => import("../components/home/AndroidShowcase"),
   () => import("../components/home/FreedomTeaser"),
   () => import("../components/home/ContactCta"),
@@ -49,6 +51,9 @@ const Home = () => {
       </Suspense>
       <Suspense fallback={null}>
         <Integrations />
+      </Suspense>
+      <Suspense fallback={null}>
+        <EasyIntegration />
       </Suspense>
       <Suspense fallback={null}>
         <AndroidShowcase />

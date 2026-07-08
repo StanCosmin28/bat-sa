@@ -29,8 +29,8 @@ const Freedom = () => {
         <div className="container mx-auto px-6 lg:px-12 relative z-10">
           <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
             <AnimatedSection>
-              <div className="inline-block mb-8 px-5 py-2 rounded-full border border-bat-blue/30 bg-bat-blue/10 backdrop-blur-md">
-                <span className="text-bat-blue font-bold tracking-widest uppercase text-xs">
+              <div className="inline-block mb-8 px-5 py-2 rounded-full border border-bat-gold/30 bg-bat-gold/10 backdrop-blur-md">
+                <span className="text-bat-gold font-bold tracking-widest uppercase text-xs">
                   {t('freedom.kicker')}
                 </span>
               </div>
@@ -45,7 +45,7 @@ const Freedom = () => {
                 <Link to="/contact" className="bg-white text-[#0a101f] hover:bg-bat-gold font-bold py-4 px-10 rounded-full transition-all hover:scale-105 shadow-[0_0_30px_rgba(255,255,255,0.1)]">
                   {t('common.requestDemo')}
                 </Link>
-                <a href="#features" className="glass-dark hover:bg-white/10 text-white font-semibold py-4 px-10 rounded-full transition-all">
+                <a href="#features" className="border-2 border-white/30 hover:border-white/50 hover:bg-white/10 text-white font-semibold py-4 px-10 rounded-full transition-all">
                   {t('common.exploreFeatures')}
                 </a>
               </div>
@@ -59,8 +59,8 @@ const Freedom = () => {
                   { icon: <Shield size={16} />, label: t('freedom.feat5') },
                   { icon: <Smartphone size={16} />, label: t('freedom.feat6') },
                 ].map(({ icon, label }) => (
-                  <div key={label} className="flex items-center gap-2 text-gray-400 text-sm font-medium tracking-wide">
-                    <span className="text-bat-blue">{icon}</span>
+                  <div key={label} className="flex items-center gap-2 text-gray-300 text-sm font-medium tracking-wide">
+                    <span className="text-bat-gold">{icon}</span>
                     {label}
                   </div>
                 ))}

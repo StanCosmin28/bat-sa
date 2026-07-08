@@ -33,6 +33,10 @@ const PhoneMockup = ({
   variant = "iphone",
   screenClassName = "",
   screenBg = "bg-gray-900",
+  // Optional: render arbitrary content inside the screen cutout instead of
+  // the plain <img> (e.g. a crossfading step carousel). Existing callers
+  // that only pass imgSrc are unaffected.
+  screenContent,
 }) => {
   const v = VARIANTS[variant] ?? VARIANTS.iphone;
 
@@ -50,11 +54,17 @@ const PhoneMockup = ({
             className="absolute overflow-hidden rounded-[2rem] sm:rounded-[2.4rem] bg-gray-900 p-0.5"
             style={IPHONE_SCREEN}
           >
-            <img
-              src={imgSrc}
-              alt={altText}
-              className="w-full h-full object-cover object-top rounded-[1.8rem] sm:rounded-[2.2rem]"
-            />
+            {screenContent ? (
+              <div className="relative w-full h-full overflow-hidden rounded-[1.8rem] sm:rounded-[2.2rem]">
+                {screenContent}
+              </div>
+            ) : (
+              <img
+                src={imgSrc}
+                alt={altText}
+                className="w-full h-full object-cover object-top rounded-[1.8rem] sm:rounded-[2.2rem]"
+              />
+            )}
           </div>
           <img src={IPHONE_SVG} alt="" className="absolute inset-0 w-full h-full pointer-events-none" />
         </div>
@@ -71,11 +81,17 @@ const PhoneMockup = ({
           <div
             className={`relative w-full h-full overflow-hidden p-0.5 ${screenBg} ${v.screenRadius} ${screenClassName}`}
           >
-            <img
-              src={imgSrc}
-              alt={altText}
-              className="w-full h-full object-cover object-top rounded-[1.5rem] sm:rounded-[1.8rem]"
-            />
+            {screenContent ? (
+              <div className="relative w-full h-full overflow-hidden rounded-[1.5rem] sm:rounded-[1.8rem]">
+                {screenContent}
+              </div>
+            ) : (
+              <img
+                src={imgSrc}
+                alt={altText}
+                className="w-full h-full object-cover object-top rounded-[1.5rem] sm:rounded-[1.8rem]"
+              />
+            )}
           </div>
 
           {/* Notch / camera cutout, drawn on top of the screen */}

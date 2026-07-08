@@ -49,6 +49,14 @@ const SYSTEMS = [
   { key: "security", Icon: Lock, labelKey: "home.integrationsSecurity" },
 ];
 
+// Protocols/platforms, not voice assistants — no "commands" to demo, so they
+// get a simple compatibility strip instead of the interactive panel above.
+const PLATFORMS = [
+  { id: "matter", icon: "/images/home/matter-icon.svg", name: "Matter" },
+  { id: "apple-home", icon: "/images/home/apple-home-icon.svg", name: "Apple Home" },
+  { id: "home-assistant", icon: "/images/home/home-assistant-icon.svg", name: "Home Assistant" },
+];
+
 const CYCLE_MS = 4500;
 const LISTEN_MS = 550;
 const TYPE_SPEED_MS = 22;
@@ -77,6 +85,9 @@ const EqualizerBars = ({ barClassName = "bg-bat-gold", height = "h-3" }) => (
 const Integrations = () => {
   const { t } = useLanguage();
   const [active, setActive] = useState(0);
+  // Mobile-only: which "Also compatible with" chip has its name expanded.
+  // On sm+ the names are always visible, so this state has no effect there.
+  const [revealedPlatform, setRevealedPlatform] = useState(null);
   const [phase, setPhase] = useState("listening");
   const [typedText, setTypedText] = useState("");
   const typeTimerRef = useRef(null);
@@ -325,6 +336,59 @@ const Integrations = () => {
             </div>
           </AnimatedSection>
         </div>
+
+        <AnimatedSection
+          delay={0.25}
+          className="max-w-4xl mx-auto mt-16 lg:mt-20 pt-12 border-t border-white/10"
+        >
+          <p className="text-center text-xs font-bold tracking-[0.2em] uppercase text-white/40 mb-8">
+            {t("home.integrationsAlsoCompatible")}
+          </p>
+          <div className="flex items-center justify-center gap-3 sm:gap-4">
+            {PLATFORMS.map((p) => {
+              const isRevealed = revealedPlatform === p.id;
+              return (
+                <motion.button
+                  key={p.id}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() =>
+                    setRevealedPlatform((prev) => (prev === p.id ? null : p.id))
+                  }
+                  onMouseEnter={() => setRevealedPlatform(p.id)}
+                  className={`flex items-center h-14 sm:h-16 px-2.5 sm:pl-3 sm:pr-6 rounded-2xl bg-white/[0.06] border transition-colors duration-300 ${
+                    isRevealed
+                      ? "border-white/25 bg-white/[0.09]"
+                      : "border-white/10 hover:border-white/25 hover:bg-white/[0.09]"
+                  }`}
+                >
+                  <span className="flex items-center justify-center h-9 w-auto min-w-9 px-1.5 shrink-0 rounded-lg bg-white">
+                    <img src={p.icon} alt={p.name} className="h-5 w-auto max-w-[3.5rem] object-contain" />
+                  </span>
+                  {/* sm+: name always visible */}
+                  <span className="hidden sm:block pl-3 text-white/70 text-sm font-semibold whitespace-nowrap">
+                    {p.name}
+                  </span>
+                  {/* mobile: name slides open on tap/hover */}
+                  <AnimatePresence initial={false}>
+                    {isRevealed && (
+                      <motion.span
+                        initial={{ width: 0, opacity: 0 }}
+                        animate={{ width: "auto", opacity: 1 }}
+                        exit={{ width: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
+                        className="sm:hidden overflow-hidden"
+                      >
+                        <span className="block pl-2.5 pr-1 text-white/70 text-sm font-semibold whitespace-nowrap">
+                          {p.name}
+                        </span>
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </motion.button>
+              );
+            })}
+          </div>
+        </AnimatedSection>
       </div>
     </section>
   );
