@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ArrowDown,
+  ChevronLeft,
+  ChevronRight,
+  CornerLeftDown,
+  MousePointerClick,
+} from "lucide-react";
 import AnimatedSection from "../AnimatedSection";
 import PhoneMockup from "../PhoneMockup";
 import { useLanguage } from "../../context/LanguageContext";
@@ -61,6 +67,9 @@ const EasyIntegration = () => {
   const { t } = useLanguage();
   const [activeId, setActiveId] = useState(INTEGRATIONS[0].id);
   const [step, setStep] = useState(0);
+  // Discoverability nudge: a "click me" badge + gentle pulse on the
+  // unselected platforms, shown until the user switches platform once.
+  const [hintActive, setHintActive] = useState(true);
 
   const active = INTEGRATIONS.find((i) => i.id === activeId);
   const lastStep = active.steps.length - 1;
@@ -75,6 +84,7 @@ const EasyIntegration = () => {
   }, [active]);
 
   const selectIntegration = (id) => {
+    setHintActive(false);
     if (id === activeId) return;
     setActiveId(id);
     setStep(0);
@@ -92,11 +102,33 @@ const EasyIntegration = () => {
               {t("home.easySubtitle")}
             </p>
 
+            {/* Desktop: "click me" nudge — stays mounted at opacity 0 once
+                dismissed so the list below never jumps */}
+            <div
+              className={`hidden lg:flex items-center gap-2 mt-10 text-bat-blue transition-opacity duration-500 ${
+                hintActive ? "opacity-60" : "opacity-0"
+              }`}
+              aria-hidden={!hintActive}
+            >
+              <MousePointerClick size={15} />
+              <span className="text-[11px] font-bold tracking-[0.15em] uppercase">
+                {t("home.easyHint")}
+              </span>
+              <motion.span
+                animate={{ y: [0, 3, 0] }}
+                transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+                className="mt-1"
+              >
+                <CornerLeftDown size={15} />
+              </motion.span>
+            </div>
+
             {/* Desktop: vertical list, mirrors the assistant list in the
                 Integrations section above for a consistent visual language */}
-            <div className="hidden lg:block border-t border-gray-100 mt-10">
-              {INTEGRATIONS.map((integration) => {
+            <div className="hidden lg:block border-t border-gray-100 mt-3">
+              {INTEGRATIONS.map((integration, index) => {
                 const isActive = integration.id === activeId;
+                const pulsing = hintActive && !isActive;
                 return (
                   <motion.button
                     key={integration.id}
@@ -106,7 +138,18 @@ const EasyIntegration = () => {
                       isActive ? "opacity-100" : "opacity-50 hover:opacity-80"
                     }`}
                   >
-                    <span
+                    <motion.span
+                      animate={pulsing ? { scale: [1, 1.08, 1] } : { scale: 1 }}
+                      transition={
+                        pulsing
+                          ? {
+                              duration: 1.8,
+                              repeat: Infinity,
+                              ease: "easeInOut",
+                              delay: index * 0.3,
+                            }
+                          : { duration: 0.3 }
+                      }
                       className={`flex items-center justify-center h-11 w-11 shrink-0 rounded-xl bg-white border transition-all duration-300 ${
                         isActive
                           ? "border-bat-blue ring-2 ring-bat-blue/20"
@@ -114,7 +157,7 @@ const EasyIntegration = () => {
                       }`}
                     >
                       <img src={integration.icon} alt="" className="h-6 w-6 object-contain" />
-                    </span>
+                    </motion.span>
                     <span
                       className={`text-base font-bold transition-colors duration-300 ${
                         isActive ? "text-bat-navy" : "text-gray-500"
@@ -130,14 +173,45 @@ const EasyIntegration = () => {
 
           {/* Mobile selector: icon pills side by side — the selected one
               "opens up" to reveal its name, the others collapse to icon-only */}
-          <AnimatedSection delay={0.1} className="lg:hidden flex items-center justify-center gap-3">
-            {INTEGRATIONS.map((integration) => {
+          <AnimatedSection delay={0.1} className="lg:hidden flex flex-col items-center gap-4">
+            <div
+              className={`flex items-center gap-2 text-bat-blue transition-opacity duration-500 ${
+                hintActive ? "opacity-60" : "opacity-0"
+              }`}
+              aria-hidden={!hintActive}
+            >
+              <MousePointerClick size={14} />
+              <span className="text-[11px] font-bold tracking-[0.15em] uppercase">
+                {t("home.easyHint")}
+              </span>
+              <motion.span
+                animate={{ y: [0, 3, 0] }}
+                transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <ArrowDown size={14} />
+              </motion.span>
+            </div>
+
+            <div className="flex items-center justify-center gap-3">
+            {INTEGRATIONS.map((integration, index) => {
               const isActive = integration.id === activeId;
+              const pulsing = hintActive && !isActive;
               return (
                 <motion.button
                   key={integration.id}
                   onClick={() => selectIntegration(integration.id)}
                   whileTap={{ scale: 0.95 }}
+                  animate={pulsing ? { scale: [1, 1.04, 1] } : { scale: 1 }}
+                  transition={
+                    pulsing
+                      ? {
+                          duration: 1.8,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          delay: index * 0.3,
+                        }
+                      : { duration: 0.3 }
+                  }
                   className={`flex items-center h-14 px-2.5 rounded-2xl border transition-colors duration-300 ${
                     isActive
                       ? "border-bat-blue bg-bat-blue/5 shadow-[0_4px_20px_-6px_rgba(2,79,137,0.35)]"
@@ -169,6 +243,7 @@ const EasyIntegration = () => {
                 </motion.button>
               );
             })}
+            </div>
           </AnimatedSection>
 
           {/* Right column: phone + step controls */}
